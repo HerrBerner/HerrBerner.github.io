@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kai Berner – Lehrerseite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400&display=swap">
+<style>
+/* Farben aus dem Schullogo. Rot und Grün tragen nie allein eine Bedeutung:
+   Jede Unterscheidung hat zusätzlich Text und Form. */
+:root{
+  color-scheme:light;
+  --petrol:#175e7f; --petrol-dark:#0f4560; --petrol-soft:#e6f0f4;
+  --tuerkis:#79c9c9; --gelb:#fbd652; --orange:#ea6b1e; --orange-text:#a8440a; --orange-soft:#fdeede;
+  --gruen:#b0d996; --koralle:#e8545a;
+  --ink:#1d2b33; --muted:#56666f; --line:#d5dee3; --bg:#ffffff; --bg-soft:#f4f7f8;
+  --font:"Lato","Segoe UI",Arial,sans-serif;
+  --wrap:1120px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--font);font-size:18px;line-height:1.6;color:var(--ink);background:var(--bg)}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--petrol);text-underline-offset:3px}
+a:hover{color:var(--petrol-dark)}
+:focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:4px}
+h1,h2,h3{line-height:1.15;margin:0;font-weight:900;color:var(--petrol);text-wrap:balance}
+h1{font-size:clamp(2.1rem,5.2vw,3.5rem);letter-spacing:-.01em}
+h2{font-size:clamp(1.6rem,3.4vw,2.2rem)}
+h3{font-size:1.25rem}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:20px}
+.stack>*+*{margin-top:1rem}
+.lead{font-size:1.2rem;max-width:36em}
+.muted{color:var(--muted)}
+.small{font-size:.95rem}
+
+/* Kopf */
+.topbar{background:var(--petrol);color:#fff;font-size:.9rem}
+.topbar .wrap{display:flex;gap:6px 22px;flex-wrap:wrap;justify-content:space-between;padding-block:7px}
+.topbar a{color:#fff}
+.head .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;padding-block:12px}
+.brand{display:flex;align-items:center;gap:16px;text-decoration:none;color:var(--ink)}
+.brand img{height:64px;width:auto}
+.brand-text{border-left:3px solid var(--gelb);padding-left:14px;line-height:1.25}
+.brand-text b{display:block;font-size:1.3rem;font-weight:900;color:var(--petrol)}
+.brand-text span{font-size:.92rem;color:var(--muted)}
+nav ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px}
+nav a{display:block;padding:9px 13px;border-radius:6px;text-decoration:none;font-weight:700;color:var(--ink);border-bottom:3px solid transparent}
+nav a:hover{background:var(--petrol-soft)}
+nav a[aria-current="page"]{color:var(--petrol);border-bottom-color:var(--orange);border-radius:6px 6px 0 0}
+.stripe{display:flex;height:8px}
+.stripe i{flex:1}
+.stripe i:nth-child(1){background:var(--orange);flex:3}
+.stripe i:nth-child(2){background:var(--gelb);flex:2}
+.stripe i:nth-child(3){background:var(--petrol);flex:4}
+.stripe i:nth-child(4){background:var(--tuerkis);flex:2}
+.stripe i:nth-child(5){background:var(--gruen)}
+.stripe i:nth-child(6){background:var(--koralle)}
+
+main{min-height:60vh}
+.view{padding-block:44px 64px}
+.view[hidden]{display:none}
+
+/* Start */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.hero img{border-radius:14px;box-shadow:14px 14px 0 var(--gelb)}
+.motto{font-weight:700;font-style:italic;color:var(--petrol)}
+.btns{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-block;font:inherit;font-weight:900;text-decoration:none;cursor:pointer;border:2px solid var(--petrol);background:var(--petrol);color:#fff;padding:12px 22px;border-radius:8px;min-height:50px}
+.btn:hover{background:var(--petrol-dark);border-color:var(--petrol-dark);color:#fff}
+.btn.line{background:#fff;color:var(--petrol)}
+.btn.line:hover{background:var(--petrol-soft);color:var(--petrol-dark)}
+
+.sportband{background:var(--petrol);color:#fff;margin-top:56px;padding-block:44px}
+.sportband h2{color:#fff}
+.sportband p{max-width:38em}
+.classgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:22px}
+.classtile{display:block;text-decoration:none;background:#fff;color:var(--petrol);border-radius:10px;padding:14px 16px;font-weight:900;font-size:1.35rem;line-height:1.2;border-bottom:6px solid var(--gelb)}
+.classtile small{display:block;font-size:.9rem;font-weight:700;color:var(--muted)}
+.classtile:hover{background:var(--gelb);color:var(--petrol-dark)}
+.faecher{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.fach{display:block;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-top:8px solid var(--tuerkis);border-radius:10px;padding:18px 20px;background:#fff}
+.fach:hover{background:var(--bg-soft);color:var(--ink)}
+.fach.bio{border-top-color:var(--gruen)} .fach.inf{border-top-color:var(--tuerkis)} .fach.mus{border-top-color:var(--gelb)}
+.fach b{display:block;font-size:1.3rem;font-weight:900;color:var(--petrol)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:22px}
+.panel{background:var(--bg-soft);border-radius:12px;padding:24px}
+.section{margin-top:56px}
+.hero>*,.about>*,.two>*{min-width:0}
+.hero img{width:100%;height:auto}
+
+/* Fachseiten */
+.fachhead{border-left:10px solid var(--orange);padding-left:20px}
+.fachhead.bio{border-color:var(--gruen)} .fachhead.inf{border-color:var(--tuerkis)} .fachhead.mus{border-color:var(--gelb)}
+.picker{margin-top:30px}
+.picker-label{font-weight:900;color:var(--petrol);font-size:1.15rem;margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{font:inherit;font-weight:900;font-size:1.1rem;cursor:pointer;border:2px solid var(--petrol);background:#fff;color:var(--petrol);padding:10px 18px;border-radius:999px;min-height:50px}
+.chip:hover{background:var(--petrol-soft)}
+.chip[aria-pressed="true"]{background:var(--petrol);color:#fff}
+.chip[aria-pressed="true"]::before{content:"✓ "}
+.level .chip{border-radius:8px}
+.level .chip[data-level="sprinter"]{border-color:var(--orange-text);color:var(--orange-text)}
+.level .chip[data-level="sprinter"]:hover{background:var(--orange-soft)}
+.level .chip[data-level="sprinter"][aria-pressed="true"]{background:var(--orange-text);color:#fff}
+.classbox{margin-top:28px;border:1px solid var(--line);border-radius:12px;padding:24px}
+.thema{background:var(--petrol-soft);border-radius:8px;padding:12px 16px}
+.thema b{color:var(--petrol)}
+.levelhelp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.levelhelp div{border-radius:8px;padding:10px 14px;font-size:.98rem;border-left:6px solid var(--petrol);background:var(--petrol-soft)}
+.levelhelp div.spr{border-left-color:var(--orange);border-left-style:double;background:var(--orange-soft)}
+.exlist{display:grid;gap:14px;margin-top:18px}
+.ex{display:grid;grid-template-columns:1fr auto;gap:10px 20px;align-items:center;border:2px solid var(--line);border-radius:10px;padding:18px 20px;background:#fff}
+.ex h3{margin-bottom:4px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{font-size:.85rem;font-weight:700;padding:2px 10px;border-radius:4px;background:var(--petrol-soft);color:var(--petrol-dark);border:1px solid var(--petrol)}
+.tag.spr{background:var(--orange-soft);color:var(--orange-text);border:1px dashed var(--orange-text)}
+.empty{border:2px dashed var(--line);border-radius:10px;padding:22px;color:var(--muted);margin-top:18px}
+
+/* Über mich */
+.about{display:grid;grid-template-columns:340px 1fr;gap:40px;align-items:start}
+.about img{border-radius:14px}
+.facts{list-style:none;margin:14px 0 0;padding:0;font-size:1rem}
+.facts li{padding:8px 0;border-bottom:1px solid var(--line)}
+.facts b{color:var(--petrol)}
+.timeline{list-style:none;margin:0;padding:0;border-left:4px solid var(--tuerkis)}
+.timeline li{position:relative;padding:0 0 18px 22px}
+.timeline li::before{content:"";position:absolute;left:-11px;top:6px;width:18px;height:18px;border-radius:50%;background:#fff;border:4px solid var(--petrol)}
+.timeline b{display:block;color:var(--petrol)}
+.plain{margin:0;padding-left:1.2em}
+.plain li{margin-bottom:6px}
+.medal{display:flex;gap:16px;align-items:center;background:var(--gelb);border-radius:12px;padding:16px 20px;color:var(--petrol-dark);font-weight:700}
+.medal svg{flex:none}
+.pills{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.pills li{background:var(--bg-soft);border:1px solid var(--line);border-radius:999px;padding:4px 14px;font-weight:700}
+table{border-collapse:collapse;width:100%;font-size:1rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--petrol);font-weight:900;background:var(--bg-soft)}
+.tablewrap{overflow-x:auto}
+
+/* Termine */
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:.95rem;margin-top:14px}
+.legend span,.kind{display:inline-flex;align-items:center;gap:8px}
+.mark{flex:none;width:16px;height:16px;display:inline-block}
+.mark.ka{background:var(--petrol)}
+.mark.zp{background:var(--orange);transform:rotate(45deg) scale(.82)}
+.mark.st{border:3px solid var(--petrol);border-radius:50%}
+.mark.fr{background:var(--gelb);border:2px solid var(--ink);border-radius:50%}
+.next{background:var(--petrol);color:#fff;border-radius:12px;padding:20px 24px;margin-top:24px}
+.next b{font-size:1.5rem;font-weight:900;display:block;line-height:1.25}
+.month{margin-top:30px}
+.month h3{border-bottom:3px solid var(--gelb);padding-bottom:6px;margin-bottom:4px}
+.dates{list-style:none;margin:0;padding:0}
+.dates li{display:grid;grid-template-columns:8.5em 1fr;gap:4px 16px;padding:11px 0;border-bottom:1px solid var(--line)}
+.dates .d{font-weight:900;color:var(--petrol);font-variant-numeric:tabular-nums}
+.dates .n{display:block;font-size:.95rem;color:var(--muted)}
+.linklist{list-style:none;margin:10px 0 0;padding:0}
+.linklist li{padding:7px 0;border-bottom:1px solid var(--line)}
+
+/* Kontakt */
+.mailbox{font-size:clamp(1.15rem,3.6vw,1.6rem);font-weight:900;color:var(--petrol);word-break:break-all;background:var(--bg-soft);border:2px solid var(--petrol);border-radius:10px;padding:14px 18px;display:inline-block;user-select:all}
+.copyrow{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:12px}
+
+footer{background:var(--petrol-dark);color:#dbe8ee;font-size:.95rem;padding-block:28px}
+footer a{color:#fff}
+footer .wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+
+@media (max-width:860px){
+  .hero,.about,.two,.faecher,footer .wrap,.levelhelp{grid-template-columns:1fr}
+  .hero img{box-shadow:8px 8px 0 var(--gelb);max-width:440px}
+  .about img{max-width:320px}
+  .ex{grid-template-columns:1fr}
+  .dates li{grid-template-columns:1fr}
+  .brand img{height:50px}
+  body{font-size:17px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <span>Persönliche Lehrerseite. Keine offizielle Seite der Schule.</span>
+  <a href="https://europaschulekoeln.eu/">Zur Homepage der Europaschule Köln</a>
+</div></div>
+
+<header class="head">
+  <div class="wrap">
+    <a class="brand" href="#start">
+      <img src="img/logo.jpg" alt="Logo Europaschule Köln" width="560" height="238">
+      <span class="brand-text"><b>Kai Berner</b><span>Lehrer für Sport, Biologie, Informatik und Musik</span></span>
+    </a>
+    <nav aria-label="Hauptmenü"><ul id="nav">
+      <li><a href="#start">Start</a></li>
+      <li><a href="#ueber-mich">Über mich</a></li>
+      <li><a href="#sport">Sport</a></li>
+      <li><a href="#biologie">Biologie</a></li>
+      <li><a href="#informatik">Informatik</a></li>
+      <li><a href="#musik">Musik</a></li>
+      <li><a href="#klasse-10-3">Klasse 10.3</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul></nav>
+  </div>
+  <div class="stripe" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+</header>
+
+<main>
+
+<!-- ================= START ================= -->
+<section class="view" id="view-start" style="padding-bottom:0">
+  <div class="wrap hero">
+    <div class="stack">
+      <h1>Hallo, ich bin Herr Berner.</h1>
+      <p class="lead">Ich bin Lehrer an der Europaschule Köln. Hier findest du Übungen für deine Klasse. Eltern finden hier Termine und meinen Kontakt.</p>
+      <p class="motto">Menschlich. Mutig. Miteinander.</p>
+      <div class="btns">
+        <a class="btn" href="#sport">Übungen für meine Klasse</a>
+        <a class="btn line" href="#klasse-10-3">Termine der Klasse 10.3</a>
+      </div>
+    </div>
+    <img src="img/portrait.jpg" alt="Gezeichnetes Bild von Kai Berner vor der Schule, mit Bällen, Mikroskop, 3D-Drucker und Gitarre" width="1000" height="1000">
+  </div>
+
+  <div class="sportband">
+    <div class="wrap">
+      <h2>Sport</h2>
+      <p style="margin-top:10px">Sport ist mein größtes Fach. Wähle deine Klasse. Dann siehst du dein Thema und deine Übungen.</p>
+      <div class="classgrid" id="sportTiles"></div>
+    </div>
+  </div>
+
+  <div class="wrap section">
+    <h2>Meine anderen Fächer</h2>
+    <div class="faecher">
+      <a class="fach bio" href="#biologie"><b>Biologie</b>Klasse 8.4 und Naturwissenschaften im Jahrgang 10</a>
+      <a class="fach inf" href="#informatik"><b>Informatik</b>3D-Druck im Trainingskurs</a>
+      <a class="fach mus" href="#musik"><b>Musik</b>In diesem Schuljahr ohne Kurs</a>
+    </div>
+
+    <div class="two" style="margin-top:56px;margin-bottom:64px">
+      <div class="panel stack">
+        <h2>Für Eltern</h2>
+        <p>Ich bin Tutor der Klasse 10.3. Auf der Klassenseite stehen die Klassenarbeiten, die Prüfungen und wichtige Schultermine.</p>
+        <div class="btns"><a class="btn" href="#klasse-10-3">Termine ansehen</a><a class="btn line" href="#kontakt">Kontakt</a></div>
+      </div>
+      <div class="panel stack">
+        <h2>Nächster Termin der 10.3</h2>
+        <p id="startNext" class="lead"></p>
+        <p><a href="#klasse-10-3">Alle Termine der Klasse 10.3</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ÜBER MICH ================= -->
+<section class="view" id="view-ueber-mich" hidden>
+  <div class="wrap about">
+    <div>
+      <img src="img/portrait.jpg" alt="Gezeichnetes Bild von Kai Berner" width="1000" height="1000">
+      <ul class="facts">
+        <li><b>Jahrgang:</b> 1992</li>
+        <li><b>Schule:</b> Europaschule Köln, Gesamtschule Zollstock</li>
+        <li><b>Dort seit:</b> November 2022</li>
+        <li><b>Fächer:</b> Sport, Biologie, Informatik, Musik</li>
+      </ul>
+    </div>
+    <div class="stack">
+      <h1>Über mich</h1>
+      <p class="lead">Ich heiße Kai Berner. Ich unterrichte Sport, Biologie, Informatik und Musik. Bewegung gehört für mich zu jedem Tag.</p>
+
+      <h2 style="margin-top:36px">Mein Werdegang</h2>
+      <ol class="timeline" style="margin-top:16px">
+        <li><b>Studium</b>Universität zu Köln und Deutsche Sporthochschule Köln</li>
+        <li><b>2019 bis 2021</b>Lehrer an zwei Grundschulen in Köln</li>
+        <li><b>Referendariat</b>Carl-von-Ossietzky-Gesamtschule Köln</li>
+        <li><b>Seit November 2022</b>Lehrer an der Europaschule Köln</li>
+      </ol>
+
+      <h2 style="margin-top:30px">Meine Aufgaben an der Schule</h2>
+      <ul class="plain">
+        <li>Tutor der Klasse 10.3</li>
+        <li>Vorsitz der Fachschaft Sport</li>
+        <li>3D-Druck im m3-Projekt</li>
+        <li>Ansprechperson für die Schul-iPads und ihre Wartung</li>
+        <li>Betreuung des Avatars für den Hausunterricht</li>
+      </ul>
+
+      <h2 style="margin-top:36px">Mein Sport früher</h2>
+      <p>Ich war Kunstturner beim Kunstturnteam Oberhausen. Mehr als zwei Jahre lang habe ich in der 2. Bundesliga geturnt.</p>
+      <div class="medal">
+        <svg width="46" height="56" viewBox="0 0 46 56" aria-hidden="true"><path d="M10 0h10l5 20h-8zM36 0H26l-5 20h8z" fill="#175e7f"/><circle cx="23" cy="36" r="18" fill="#fff" stroke="#0f4560" stroke-width="4"/><text x="23" y="43" text-anchor="middle" font-family="Lato,Arial" font-weight="900" font-size="20" fill="#0f4560">1</text></svg>
+        <span>Mein größter Erfolg: die Goldmedaille mit der Mannschaft bei den Deutschen Hochschulmeisterschaften.</span>
+      </div>
+
+      <h2 style="margin-top:36px">Mein Sport heute</h2>
+      <ul class="pills"><li>Bouldern</li><li>Kraftsport</li><li>Snowboarden</li><li>Squash</li><li>Kiten</li></ul>
+
+      <h2 style="margin-top:30px">Das mache ich sonst gern</h2>
+      <ul class="pills"><li>Brettspiele</li><li>Klavier spielen</li><li>Gitarre spielen</li></ul>
+
+      <h2 style="margin-top:36px">Meine Klassen im Schuljahr 2026/27</h2>
+      <div class="tablewrap"><table id="kursTable"><thead><tr><th>Fach</th><th>Klasse oder Kurs</th><th>Thema bis zu den Weihnachtsferien</th></tr></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FACHSEITEN (werden per Skript gefüllt) ================= -->
+<section class="view" id="view-sport" hidden><div class="wrap">
+  <div class="fachhead stack"><h1>Sport</h1>
+  <p class="lead">Spielen, turnen, schwimmen, kämpfen, laufen: Im Sport probierst du viel aus. Du lernst, fair zu sein und im Team zu arbeiten.</p></div>
+  <div data-fach="sport"></div>
+</div></section>
+
+<section class="view" id="view-biologie" hidden><div class="wrap">
+  <div class="fachhead bio stack"><h1>Biologie</h1>
+  <p class="lead">In Biologie geht es um das Leben: um Pflanzen, Tiere und deinen eigenen Körper.</p></div>
+  <div data-fach="biologie"></div>
+</div></section>
+
+<section class="view" id="view-informatik" hidden><div class="wrap">
+  <div class="fachhead inf stack"><h1>Informatik</h1>
+  <p class="lead">In diesem Schuljahr leite ich den Trainingskurs 3D-Druck. Dort entwirfst du eigene Modelle und druckst sie aus.</p></div>
+  <div data-fach="informatik"></div>
+</div></section>
+
+<section class="view" id="view-musik" hidden><div class="wrap">
+  <div class="fachhead mus stack"><h1>Musik</h1>
+  <p class="lead">Musik ist eines meiner Fächer. Ich spiele selbst Klavier und Gitarre.</p></div>
+  <div data-fach="musik"></div>
+</div></section>
+
+<!-- ================= KLASSE 10.3 ================= -->
+<section class="view" id="view-klasse-10-3" hidden><div class="wrap">
+  <div class="stack">
+    <h1>Klasse 10.3</h1>
+    <p class="lead">Ich bin Tutor der Klasse 10.3. Hier stehen die Klassenarbeiten, die Prüfungen und wichtige Schultermine. Vergangene Termine verschwinden von selbst.</p>
+  </div>
+  <div class="next" id="nextBox"></div>
+
+  <div class="two">
+    <div>
+      <h2>Termine</h2>
+      <div class="legend" aria-label="Zeichen-Erklärung">
+        <span><i class="mark ka"></i>Klassenarbeit</span>
+        <span><i class="mark zp"></i>Zentrale Prüfung</span>
+        <span><i class="mark st"></i>Schultermin</span>
+        <span><i class="mark fr"></i>Kein Unterricht</span>
+      </div>
+      <div id="dates"></div>
+      <p class="small muted" style="margin-top:18px">Die Klassenarbeiten gelten für den ganzen Jahrgang 10. WP heißt Wahlpflichtfach. Die Buchstaben in Klammern nennen den Kurs, zum Beispiel NW für Naturwissenschaften. Termine können sich ändern. Es gilt immer der <a href="https://europaschulekoeln.eu/service/testkalender/">Testkalender der Schule</a>.</p>
+    </div>
+
+    <div class="stack">
+      <div class="panel stack">
+        <h2>Beruf und Zukunft</h2>
+        <p>Nach der 10. Klasse gibt es viele Wege: Ausbildung, Berufskolleg oder Oberstufe. Diese Seiten helfen bei der Entscheidung.</p>
+        <p><b>Berufsberatung in der Schule:</b> donnerstags alle zwei Wochen in Raum 113. Die Beratung macht die Agentur für Arbeit. Du trägst dich vor Ort in eine Liste ein.</p>
+        <ul class="linklist">
+          <li><a href="https://europaschulekoeln.eu/lernen-und-leben/berufsorientierung/">Berufsorientierung an der Europaschule</a></li>
+          <li><a href="https://europaschulekoeln.eu/wp-content/uploads/2026/09/Termine_Bellomo-2627.pdf">Termine der Berufsberatung (PDF)</a></li>
+          <li><a href="https://www.arbeitsagentur.de/bildung/noch-planlos">Noch planlos? Hilfe der Agentur für Arbeit</a></li>
+          <li><a href="https://planet-beruf.de/schuelerinnen/">Planet Beruf: Berufe entdecken</a></li>
+          <li><a href="https://web.arbeitsagentur.de/berufenet/">Berufenet: alle Berufe von A bis Z</a></li>
+          <li><a href="https://www.azubiyo.de/">Azubiyo: Ausbildungsplätze suchen</a></li>
+          <li><a href="https://elternportal-nrw.de/">Elternportal NRW zur Berufsorientierung</a></li>
+        </ul>
+      </div>
+      <div class="panel stack">
+        <h2>Mehr von der Schule</h2>
+        <ul class="linklist">
+          <li><a href="https://europaschulekoeln.eu/termine/">Alle Termine der Schule</a></li>
+          <li><a href="https://europaschulekoeln.eu/service/testkalender/">Testkalender</a></li>
+          <li><a href="https://europaschulekoeln.eu/service/downloads/">Downloads</a></li>
+          <li><a href="https://europaschulekoeln.eu/unsere-schule/laufbahn/">Schullaufbahnen und Abschlüsse</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ================= KONTAKT ================= -->
+<section class="view" id="view-kontakt" hidden><div class="wrap">
+  <div class="stack">
+    <h1>Kontakt</h1>
+    <p class="lead">Schreiben Sie mir eine E-Mail. Ich antworte so schnell wie möglich.</p>
+    <p class="mailbox" id="mail">esk.berner@schulen-koeln.de</p>
+    <div class="copyrow">
+      <button class="btn" id="copyMail" type="button">Adresse kopieren</button>
+      <a class="btn line" href="mailto:esk.berner@schulen-koeln.de">E-Mail-Programm öffnen</a>
+      <span id="copyMsg" role="status" class="muted"></span>
+    </div>
+  </div>
+
+  <div class="two" style="margin-top:44px">
+    <div class="stack">
+      <h2>Sprechzeiten</h2>
+      <p><b>Gespräche gibt es nur nach Absprache.</b> Bitte schreiben Sie mir zuerst eine E-Mail. Dann machen wir einen Termin aus.</p>
+      <p>In diesen Zeiten habe ich in der Regel keinen Unterricht:</p>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Tag</th><th>Stunde</th><th>Uhrzeit</th></tr></thead>
+        <tbody>
+          <tr><td>Montag</td><td>5. und 6. Stunde</td><td>11:45 bis 13:20 Uhr</td></tr>
+          <tr><td>Mittwoch</td><td>3. und 4. Stunde</td><td>9:55 bis 11:30 Uhr</td></tr>
+          <tr><td>Donnerstag</td><td>7. Stunde</td><td>13:35 bis 14:20 Uhr</td></tr>
+          <tr><td>Freitag</td><td>3. und 4. Stunde</td><td>9:55 bis 11:30 Uhr</td></tr>
+        </tbody>
+      </table></div>
+      <p class="small muted">Der nächste Eltern- und Schüler:innensprechtag ist am Mittwoch, 25.11.2026, von 14 bis 18 Uhr.</p>
+    </div>
+    <div class="panel stack">
+      <h2>Schule und Sekretariat</h2>
+      <p>Europaschule Köln<br>Gesamtschule Zollstock<br>Raderthalgürtel 3<br>50968 Köln</p>
+      <p><b>Telefon:</b> 0221 2850060<br><b>E-Mail:</b> esk.sekretariat@schulen-koeln.de</p>
+      <p><b>Sekretariat:</b> Montag bis Donnerstag 8 bis 15 Uhr, Freitag 8 bis 13 Uhr</p>
+      <p>Krankmeldungen gehen bitte an das Sekretariat.</p>
+      <p><a href="https://europaschulekoeln.eu/service/kontakt/">Kontaktseite der Schule</a></p>
+    </div>
+  </div>
+</div></section>
+
+</main>
+
+<footer><div class="wrap">
+  <p><b>Kai Berner</b><br>Lehrer an der Europaschule Köln<br>esk.berner@schulen-koeln.de</p>
+  <p>Dies ist eine persönliche Lehrerseite und keine offizielle Seite der Schule.<br>
+  <a href="https://europaschulekoeln.eu/">europaschulekoeln.eu</a> · Stand: November 2026</p>
+</div></footer>
+
+<script>
+/* =====================================================================
+   INHALTE ZUM PFLEGEN
+   1) KURSE:    Klassen je Fach und ihr aktuelles Thema.
+   2) UEBUNGEN: Eine Zeile pro Artefakt. Felder:
+        fach    'sport' | 'biologie' | 'informatik' | 'musik'
+        klasse  wie die id in KURSE, z. B. '8.6'
+        niveau  ['basis'], ['sprinter'] oder beide
+        url     Link zum freigegebenen Artefakt
+   3) TERMINE:  Datum als JJJJ-MM-TT. art: ka | zp | st | fr
+   ===================================================================== */
+const KURSE = {
+  sport: [
+    {id:'5.1',  name:'Klasse 5.1', zusatz:'Sport',     thema:'Spiele erfinden und Regeln verändern. Ab Dezember: Bodenturnen.'},
+    {id:'6.2',  name:'Klasse 6.2', zusatz:'Schwimmen', thema:'Kraulschwimmen: Beinschlag, Armzug und Atmung.'},
+    {id:'6.4',  name:'Klasse 6.4', zusatz:'Schwimmen', thema:'Kraulschwimmen: Beinschlag, Armzug und Atmung.'},
+    {id:'6.5',  name:'Klasse 6.5', zusatz:'Schwimmen', thema:'Kraulschwimmen: Beinschlag, Armzug und Atmung.'},
+    {id:'8.6',  name:'Klasse 8.6', zusatz:'Sport',     thema:'Ringen und Kämpfen. Ab Dezember: Stockkampf.'},
+    {id:'10.3', name:'Klasse 10.3',zusatz:'Sport',     thema:'Badminton mit Spielabnahme am 17.12. Danach: Hürdenlauf und Parkour.'}
+  ],
+  biologie: [
+    {id:'8.4',   name:'Klasse 8.4',  zusatz:'Biologie', thema:'Information und Regulation: Nerven, Gehirn und Lernen.'},
+    {id:'NW10',  name:'Jahrgang 10', zusatz:'Naturwissenschaften (WP)', thema:'Genetik: Zellkern, Chromosomen, Mitose und Meiose.'}
+  ],
+  informatik: [
+    {id:'TRK', name:'Trainingskurs 3D-Druck', zusatz:'Jahrgang 7 bis Q1', thema:'Eigene und vorgegebene Druckdateien erstellen und 3D-Entwürfe drucken.'}
+  ],
+  musik: []
+};
+
+const UEBUNGEN = [
+  {fach:'sport', klasse:'8.6', titel:'Kraftraum-Check',
+   text:'6 Fragen zum sicheren Training im Kraftraum. Ihr löst sie als Gruppe und sammelt Hantelscheiben.',
+   dauer:'ca. 20 Minuten', niveau:['basis','sprinter'],
+   hinweis:{basis:'Wählt in der Übung „Starter“. Ihr dürft die Tipps öffnen.', sprinter:'Wählt in der Übung „Profi“. Ihr löst alles ohne Tipp.'},
+   url:'https://claude.ai/artifact/QCt6nhiibmQ6ia4e3hgeBo'}
+];
+
+const TERMINE = [
+  {d:'2026-11-12', art:'ka', t:'Klassenarbeit Mathe'},
+  {d:'2026-11-25', art:'st', t:'Eltern- und Schüler:innensprechtag', n:'14 bis 18 Uhr'},
+  {d:'2026-11-28', art:'st', t:'Tag der offenen Tür', n:'9 bis 13 Uhr'},
+  {d:'2026-12-01', art:'ka', t:'Klassenarbeit Wahlsprache'},
+  {d:'2026-12-04', art:'ka', t:'Klassenarbeit WP (HW)'},
+  {d:'2026-12-10', art:'ka', t:'Klassenarbeit Deutsch'},
+  {d:'2026-12-14', art:'ka', t:'Klassenarbeit Englisch'},
+  {d:'2026-12-15', art:'fr', t:'Studientag', n:'Kein Unterricht'},
+  {d:'2026-12-18', art:'ka', t:'Klassenarbeit Mathe'},
+  {d:'2026-12-22', art:'st', t:'Letzter Schultag vor den Weihnachtsferien'},
+  {d:'2026-12-23', bis:'2027-01-06', art:'fr', t:'Weihnachtsferien'},
+  {d:'2027-01-15', art:'ka', t:'Klassenarbeit WP (DG, NW)'},
+  {d:'2027-02-25', art:'ka', t:'Klassenarbeit Deutsch'},
+  {d:'2027-03-05', art:'ka', t:'Klassenarbeit Mathe'},
+  {d:'2027-03-08', art:'ka', t:'Klassenarbeit Englisch'},
+  {d:'2027-03-09', art:'ka', t:'Klassenarbeit Wahlsprache'},
+  {d:'2027-03-19', art:'ka', t:'Klassenarbeit WP (HW, DG, NW)'},
+  {d:'2027-03-22', bis:'2027-04-03', art:'fr', t:'Osterferien'},
+  {d:'2027-04-23', art:'ka', t:'Klassenarbeit Mathe'},
+  {d:'2027-05-11', art:'zp', t:'Zentrale Prüfung Deutsch'},
+  {d:'2027-05-13', art:'zp', t:'Zentrale Prüfung Englisch'},
+  {d:'2027-05-20', art:'zp', t:'Zentrale Prüfung Mathe'},
+  {d:'2027-06-04', art:'ka', t:'Klassenarbeit WP (HW, DG, NW)'},
+  {d:'2027-06-08', art:'ka', t:'Klassenarbeit Wahlsprache'}
+];
+/* ===================== ab hier nichts mehr ändern ===================== */
+
+const VIEWS=['start','ueber-mich','sport','biologie','informatik','musik','klasse-10-3','kontakt'];
+const FACHNAME={sport:'Sport',biologie:'Biologie',informatik:'Informatik',musik:'Musik'};
+const ARTNAME={ka:'Klassenarbeit',zp:'Zentrale Prüfung',st:'Schultermin',fr:'Kein Unterricht'};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const state={klasse:{},niveau:store.get('kb-niveau')||'basis'};
+Object.keys(KURSE).forEach(f=>{const k=store.get('kb-klasse-'+f);if(k&&KURSE[f].some(c=>c.id===k))state.klasse[f]=k});
+
+/* ---------- Ansichten ---------- */
+function show(){
+  let v=location.hash.replace('#','');
+  if(!VIEWS.includes(v))v='start';
+  VIEWS.forEach(x=>document.getElementById('view-'+x).hidden=x!==v);
+  document.querySelectorAll('#nav a').forEach(a=>{
+    if(a.getAttribute('href')==='#'+v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+  document.title=(v==='start'?'':document.querySelector('#view-'+v+' h1').textContent+' – ')+'Kai Berner – Lehrerseite';
+  if(KURSE[v])renderFach(v);
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',show);
+
+/* ---------- Fachseiten ---------- */
+function renderFach(f){
+  const box=document.querySelector('[data-fach="'+f+'"]'), kurse=KURSE[f];
+  if(!kurse.length){
+    box.innerHTML='<div class="empty">In diesem Schuljahr unterrichte ich keinen '+FACHNAME[f]+'kurs. Sobald es einen Kurs gibt, findest du hier deine Klasse und deine Übungen.</div>';
+    return;
+  }
+  const sel=state.klasse[f], kurs=kurse.find(c=>c.id===sel);
+  let h='<div class="picker"><p class="picker-label" id="pl-'+f+'">1. Wähle deine Klasse</p><div class="chips" role="group" aria-labelledby="pl-'+f+'">'+
+    kurse.map(c=>'<button type="button" class="chip" data-klasse="'+esc(c.id)+'" aria-pressed="'+(c.id===sel)+'">'+esc(c.name)+'</button>').join('')+'</div></div>';
+  if(!kurs){
+    h+='<div class="empty">Tippe oben auf deine Klasse. Dann siehst du dein Thema und deine Übungen.</div>';
+  }else{
+    const alle=UEBUNGEN.filter(u=>u.fach===f&&u.klasse===kurs.id);
+    const pass=alle.filter(u=>u.niveau.includes(state.niveau));
+    h+='<div class="classbox"><h2>'+esc(kurs.name)+' <span class="muted" style="font-weight:700;font-size:.7em">'+esc(kurs.zusatz)+'</span></h2>'+
+      '<p class="thema" style="margin-top:14px"><b>Unser Thema:</b> '+esc(kurs.thema)+'</p>'+
+      '<div class="picker level"><p class="picker-label" id="nl-'+f+'">2. Wähle dein Niveau</p><div class="chips" role="group" aria-labelledby="nl-'+f+'">'+
+        '<button type="button" class="chip" data-level="basis" aria-pressed="'+(state.niveau==='basis')+'">Basis</button>'+
+        '<button type="button" class="chip" data-level="sprinter" aria-pressed="'+(state.niveau==='sprinter')+'">Sprinter</button></div>'+
+        '<div class="levelhelp"><div><b>Basis:</b> Du übst Schritt für Schritt und bekommst Hilfen.</div><div class="spr"><b>Sprinter:</b> Du arbeitest ohne Hilfen und löst schwerere Aufgaben.</div></div></div>'+
+      '<p class="picker-label" style="margin-top:28px">3. Starte eine Übung</p>';
+    if(pass.length){
+      h+='<div class="exlist" style="margin-top:0">'+pass.map(u=>'<article class="ex"><div><h3>'+esc(u.titel)+'</h3><p>'+esc(u.text)+'</p>'+
+        (u.hinweis&&u.hinweis[state.niveau]?'<p style="margin-top:6px"><b>So geht es auf deinem Niveau:</b> '+esc(u.hinweis[state.niveau])+'</p>':'')+
+        '<div class="tags">'+u.niveau.map(n=>'<span class="tag'+(n==='sprinter'?' spr':'')+'">'+(n==='sprinter'?'Sprinter':'Basis')+'</span>').join('')+
+        (u.dauer?'<span class="tag" style="background:#fff;border-color:var(--line);color:var(--muted)">'+esc(u.dauer)+'</span>':'')+'</div></div>'+
+        '<a class="btn" href="'+esc(u.url)+'" target="_blank" rel="noopener">Übung starten</a>'+
+        '<p class="small muted" style="grid-column:1/-1">Die Übung öffnet sich in einem neuen Fenster. Du kannst sie so oft neu starten, wie du möchtest.</p></article>').join('')+'</div>';
+    }else if(alle.length){
+      h+='<div class="empty" style="margin-top:0">Für dieses Niveau gibt es noch keine Übung. Wähle oben das andere Niveau.</div>';
+    }else{
+      h+='<div class="empty" style="margin-top:0">Für deine Klasse gibt es noch keine Übung. Schau bald wieder vorbei.</div>';
+    }
+    h+='</div>';
+  }
+  box.innerHTML=h;
+  box.querySelectorAll('[data-klasse]').forEach(b=>b.onclick=()=>{state.klasse[f]=b.dataset.klasse;store.set('kb-klasse-'+f,b.dataset.klasse);renderFach(f)});
+  box.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{state.niveau=b.dataset.level;store.set('kb-niveau',state.niveau);renderFach(f)});
+}
+
+/* ---------- Startseite: Sport-Kacheln ---------- */
+document.getElementById('sportTiles').innerHTML=KURSE.sport.map(c=>
+  '<a class="classtile" href="#sport" data-klasse="'+esc(c.id)+'">'+esc(c.id)+'<small>'+esc(c.zusatz)+'</small></a>').join('');
+document.querySelectorAll('.classtile').forEach(a=>a.addEventListener('click',()=>{
+  state.klasse.sport=a.dataset.klasse;store.set('kb-klasse-sport',a.dataset.klasse);
+  if(location.hash==='#sport')renderFach('sport')}));
+
+/* ---------- Über mich: Kurstabelle ---------- */
+document.querySelector('#kursTable tbody').innerHTML=Object.keys(KURSE).map(f=>KURSE[f].map(c=>
+  '<tr><td>'+esc(c.zusatz.startsWith('Jahrgang 7')?'Informatik':c.zusatz)+'</td><td>'+esc(c.name)+'</td><td>'+esc(c.thema)+'</td></tr>').join('')).join('');
+
+/* ---------- Termine ---------- */
+const WT=['So','Mo','Di','Mi','Do','Fr','Sa'], MON=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const pd=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)};
+const fd=d=>WT[d.getDay()]+', '+String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.';
+const today=new Date();today.setHours(0,0,0,0);
+const kommend=TERMINE.filter(t=>pd(t.bis||t.d)>=today).sort((a,b)=>a.d<b.d?-1:1);
+function when(t){return t.bis?fd(pd(t.d))+' bis '+fd(pd(t.bis)):fd(pd(t.d))}
+function inDays(t){const n=Math.round((pd(t.d)-today)/864e5);return n<=0?'heute':n===1?'morgen':'in '+n+' Tagen'}
+(function(){
+  const nb=document.getElementById('nextBox'), sn=document.getElementById('startNext'), box=document.getElementById('dates');
+  if(!kommend.length){
+    nb.innerHTML='<b>Im Moment sind keine Termine eingetragen.</b>';
+    sn.textContent='Im Moment sind keine Termine eingetragen.';
+    box.innerHTML='<div class="empty">Neue Termine stehen im Testkalender der Schule.</div>';return;
+  }
+  const n=kommend[0];
+  nb.innerHTML='<span>Nächster Termin, '+inDays(n)+':</span><b>'+esc(when(n))+' '+esc(n.t)+'</b>'+(n.n?'<span>'+esc(n.n)+'</span>':'');
+  sn.innerHTML='<b>'+esc(when(n))+'</b> '+esc(n.t)+' ('+inDays(n)+')';
+  let h='',cur='';
+  kommend.forEach(t=>{
+    const d=pd(t.d), key=MON[d.getMonth()]+' '+d.getFullYear();
+    if(key!==cur){if(cur)h+='</ul></div>';cur=key;h+='<div class="month"><h3>'+key+'</h3><ul class="dates">'}
+    h+='<li><span class="d">'+esc(when(t))+'</span><span><span class="kind"><i class="mark '+t.art+'" title="'+ARTNAME[t.art]+'"></i><b>'+esc(t.t)+'</b></span>'+
+       '<span class="n">'+ARTNAME[t.art]+(t.n&&t.n!==ARTNAME[t.art]?', '+esc(t.n):'')+'</span></span></li>';
+  });
+  box.innerHTML=h+'</ul></div>';
+})();
+
+/* ---------- Kontakt ---------- */
+document.getElementById('copyMail').addEventListener('click',()=>{
+  const msg=document.getElementById('copyMsg'), adr=document.getElementById('mail').textContent;
+  const fail=()=>{msg.textContent='Kopieren geht hier nicht. Bitte die Adresse markieren und kopieren.'};
+  try{navigator.clipboard.writeText(adr).then(()=>{msg.textContent='Adresse kopiert.'},fail)}catch(e){fail()}
+});
+
+show();
+</script>
+</body>
+</html>
