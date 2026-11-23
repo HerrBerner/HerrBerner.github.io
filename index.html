@@ -464,7 +464,7 @@ const UEBUNGEN = [
    text:'6 Fragen zum sicheren Training im Kraftraum. Ihr löst sie als Gruppe und sammelt Hantelscheiben.',
    dauer:'ca. 20 Minuten', niveau:['basis','sprinter'],
    hinweis:{basis:'Wählt in der Übung „Starter“. Ihr dürft die Tipps öffnen.', sprinter:'Wählt in der Übung „Profi“. Ihr löst alles ohne Tipp.'},
-   url:'https://claude.ai/artifact/QCt6nhiibmQ6ia4e3hgeBo'}
+   url:'uebungen/kraftraum-check.html'}
 ];
 
 const TERMINE = [
@@ -543,8 +543,8 @@ function renderFach(f){
         (u.hinweis&&u.hinweis[state.niveau]?'<p style="margin-top:6px"><b>So geht es auf deinem Niveau:</b> '+esc(u.hinweis[state.niveau])+'</p>':'')+
         '<div class="tags">'+u.niveau.map(n=>'<span class="tag'+(n==='sprinter'?' spr':'')+'">'+(n==='sprinter'?'Sprinter':'Basis')+'</span>').join('')+
         (u.dauer?'<span class="tag" style="background:#fff;border-color:var(--line);color:var(--muted)">'+esc(u.dauer)+'</span>':'')+'</div></div>'+
-        '<a class="btn" href="'+esc(u.url)+'" target="_blank" rel="noopener">Übung starten</a>'+
-        '<p class="small muted" style="grid-column:1/-1">Die Übung öffnet sich in einem neuen Fenster. Du kannst sie so oft neu starten, wie du möchtest.</p></article>').join('')+'</div>';
+        '<a class="btn" href="'+esc(u.url)+'">Übung starten</a>'+
+        '<p class="small muted" style="grid-column:1/-1">Du kannst die Übung so oft neu starten, wie du möchtest. Über „Zurück zur Lehrerseite“ kommst du wieder hierher.</p></article>').join('')+'</div>';
     }else if(alle.length){
       h+='<div class="empty" style="margin-top:0">Für dieses Niveau gibt es noch keine Übung. Wähle oben das andere Niveau.</div>';
     }else{

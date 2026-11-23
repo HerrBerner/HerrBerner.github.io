@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Kraftraum-Check – Sport 8.6</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;padding:0}
+img{max-width:100%}
+[hidden]:not([hidden=until-found i]){display:none!important}
+/* Layout: eine Frage pro Bildschirm, oben eine Hantelstange, auf die jeder Punkt als Scheibe geladen wird */
+:root{
+  --bg:#eef1f0;
+  --panel:#ffffff;
+  --ink:#1c2826;
+  --muted:#5b6966;
+  --line:#cdd5d3;
+  --steel:#8d9a97;
+  --accent:#0f6e64;
+  --accent-ink:#ffffff;
+  --ok:#1f7a3a; --ok-bg:#e3f3e7;
+  --bad:#b3261e; --bad-bg:#fbe7e5;
+  --tip:#8a5a00; --tip-bg:#fff3d6;
+  --p1:#c8312b; --p2:#2559b5; --p3:#d9a514; --p4:#2f8a3e; --p5:#6b4fa1; --p6:#3a3f44;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121817; --panel:#1b2321; --ink:#e7eeec; --muted:#a2b0ad; --line:#2f3b39; --steel:#6f7c79;
+  --accent:#3fb3a5; --accent-ink:#06201c;
+  --ok:#6fd38a; --ok-bg:#16301f; --bad:#ff8a80; --bad-bg:#3a1c1a; --tip:#f2c35b; --tip-bg:#33280f;
+  --p6:#a7b0b8; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#121817; --panel:#1b2321; --ink:#e7eeec; --muted:#a2b0ad; --line:#2f3b39; --steel:#6f7c79;
+  --accent:#3fb3a5; --accent-ink:#06201c;
+  --ok:#6fd38a; --ok-bg:#16301f; --bad:#ff8a80; --bad-bg:#3a1c1a; --tip:#f2c35b; --tip-bg:#33280f;
+  --p6:#a7b0b8; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.5}
+.wrap{max-width:760px;margin:0 auto;padding-block:16px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:18px}
+h1,h2{font-family:var(--display);font-weight:800;line-height:1.05;text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:clamp(2.2rem,7vw,3.2rem);text-transform:uppercase}
+h2{font-size:clamp(1.6rem,5vw,2.1rem)}
+p{margin:0}
+.eyebrow{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:.85rem;color:var(--muted)}
+.back{font-size:.95rem;color:var(--accent);font-weight:700}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;display:grid;gap:4px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.bar-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.score{font-family:var(--display);font-weight:800;font-size:1.5rem;font-variant-numeric:tabular-nums}
+.score small{font-weight:600;color:var(--muted);font-size:1rem}
+svg.barbell{width:100%;height:auto;display:block;max-width:100%}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:grid;gap:16px}
+.qhead{display:flex;gap:12px;align-items:center}
+.qnum{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.4rem;color:#fff}
+.how{color:var(--muted);font-size:1rem}
+.pts{font-family:var(--display);font-weight:600;color:var(--muted);white-space:nowrap}
+
+.stmts{display:grid;gap:10px}
+.stmt{border:1px solid var(--line);border-radius:8px;padding:12px;display:grid;gap:10px}
+.stmt-t{font-weight:700}
+.choice{display:flex;gap:8px;flex-wrap:wrap}
+.choice button,.opt{font:inherit;font-size:1rem;border:2px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:10px 14px;cursor:pointer;min-height:48px}
+.choice button[aria-pressed="true"],.opt[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--panel));font-weight:700}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;width:100%}
+.res-ok{border-color:var(--ok)!important;background:var(--ok-bg)!important}
+.res-bad{border-color:var(--bad)!important;background:var(--bad-bg)!important}
+.why{font-size:.95rem;color:var(--ink)}
+.mark{font-weight:700}
+.mark.ok{color:var(--ok)} .mark.bad{color:var(--bad)}
+
+input[type=text],textarea{font:inherit;width:100%;border:2px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--panel);color:var(--ink)}
+textarea{min-height:150px;resize:vertical}
+input:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.tipbox{background:var(--tip-bg);color:var(--ink);border-radius:8px;padding:12px 14px;font-size:1rem;border-left:4px solid var(--tip)}
+.tipbox b{color:var(--tip)}
+.solution{background:var(--ok-bg);border-radius:8px;padding:12px 14px;display:grid;gap:8px;font-size:1rem}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
+.chk:last-child{border-bottom:0}
+.chk input{width:24px;height:24px;flex:none;margin-top:2px;accent-color:var(--accent)}
+
+.agree{display:flex;gap:10px;align-items:center;font-weight:700}
+.agree input{width:24px;height:24px;accent-color:var(--accent)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+.btn{font:inherit;font-weight:700;border:0;border-radius:8px;padding:12px 20px;min-height:48px;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--accent);border:2px solid var(--accent)}
+.btn.small{padding:8px 14px;min-height:40px;font-size:.95rem}
+.feedback{font-family:var(--display);font-weight:800;font-size:1.5rem}
+
+.steps{display:grid;gap:10px;margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{display:flex;gap:12px;align-items:flex-start}
+.steps li::before{counter-increment:s;content:counter(s);flex:none;width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--display);font-weight:800}
+.levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.level{border:1px solid var(--line);border-radius:8px;padding:12px;font-size:1rem}
+.level b{font-family:var(--display);font-size:1.2rem;display:block}
+
+.result-big{font-family:var(--display);font-weight:800;font-size:clamp(3rem,12vw,4.5rem);line-height:1;font-variant-numeric:tabular-nums}
+.rows{display:grid;gap:8px}
+.row{display:grid;grid-template-columns:2.2rem 1fr auto;gap:10px;align-items:center;font-size:1rem}
+.row .track{height:12px;background:var(--line);border-radius:6px;overflow:hidden}
+.row .fill{height:100%}
+.row span:last-child{font-variant-numeric:tabular-nums;white-space:nowrap}
+.confirm{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:1rem}
+.code{font-family:var(--display);font-weight:800;font-size:clamp(2.2rem,9vw,3rem);letter-spacing:.12em;font-variant-numeric:tabular-nums;background:var(--bg);border:2px dashed var(--line);border-radius:8px;padding:8px 16px;justify-self:start;user-select:all}
+@media (prefers-reduced-motion:no-preference){ .plate-new{animation:drop .45s cubic-bezier(.3,1.4,.6,1)} @keyframes drop{from{transform:translateY(-14px);opacity:0}to{transform:none;opacity:1}} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="../#sport">Zurück zur Lehrerseite</a>
+  <div class="bar" id="barWrap" aria-live="polite">
+    <div class="bar-top">
+      <span class="eyebrow" id="groupLabel">Fitness – Gruppenaufgabe</span>
+      <span class="score"><span id="scoreNow">0</span> <small>von <span id="scoreMax">20</span> Punkten</small></span>
+    </div>
+    <svg class="barbell" id="barbell" viewBox="0 0 400 70" role="img" aria-label="Hantelstange mit euren Punkten"></svg>
+  </div>
+  <main id="app"></main>
+</div>
+
+<script>
+const COLORS=['--p1','--p2','--p3','--p4','--p5','--p6'];
+const Q=[
+ {type:'multi',title:'Vor dem Krafttraining sollte man …',how:'Entscheidet bei jedem Satz: Stimmt das oder stimmt das nicht?',
+  tip:'Denkt an unsere Stunde zum Aufwärmen: Wozu wärmen wir uns auf?',
+  items:[
+   {t:'… sich aufwärmen.',ok:true,why:'Warme Muskeln sind stärker und verletzen sich nicht so schnell.'},
+   {t:'… viel essen.',ok:false,why:'Mit vollem Bauch trainiert man schlecht. Besser: 1–2 Stunden vorher eine kleine Mahlzeit.'},
+   {t:'… nichts trinken.',ok:false,why:'Dein Körper braucht Wasser. Trinke vor und während des Trainings.'},
+   {t:'… sich locker dehnen und bewegen (z. B. Arme kreisen).',ok:true,why:'Lockere, schwingende Bewegungen machen die Gelenke beweglich. Langes, starkes Dehnen direkt vorher kann die Kraft kurz senken.'}
+  ]},
+ {type:'single',title:'Die Übungen sollten immer technisch richtig ausgeführt werden.',how:'Wählt eine Antwort.',
+  tip:'Was kann passieren, wenn man eine Übung falsch macht?',
+  opts:['wahr','falsch'],correct:0,why:'Gute Technik schützt Gelenke und Rücken. Erst die Technik, dann mehr Gewicht.'},
+ {type:'single',title:'Worauf achtet man beim Training besonders, wenn es um den Rücken geht?',how:'Wählt eine Antwort.',
+  tip:'Stellt euch vor, ihr hebt eine schwere Kiste vom Boden hoch.',
+  opts:['Der Rücken bleibt gerade (natürlich aufrecht).','Bei den meisten Übungen steht man im Hohlkreuz.','Am besten macht man einen Buckel.'],correct:0,
+  why:'Ein gerader Rücken verteilt das Gewicht gut. Hohlkreuz und Buckel belasten die Wirbelsäule.'},
+ {type:'multi',title:'Was sollte beim Training an Geräten beachtet werden?',how:'Entscheidet bei jedem Satz: Stimmt das oder stimmt das nicht?',
+  tip:'Drei Sätze stimmen, drei Sätze stimmen nicht.',
+  items:[
+   {t:'Man trainiert alle großen Muskelgruppen, z. B. Bauch und Rücken.',ok:true,why:'Muskeln arbeiten als Paar. Sind beide stark, bleibt der Körper im Gleichgewicht.'},
+   {t:'Ich nehme immer so viel Gewicht wie mein Freund vor mir.',ok:false,why:'Jeder Körper ist anders. Wähle ein Gewicht, das zu dir passt.'},
+   {t:'Die Übungen werden langsam und gleichmäßig ausgeführt.',ok:true,why:'So arbeitet der Muskel die ganze Zeit, und die Gelenke werden geschont.'},
+   {t:'Je schneller man die Übung macht, desto mehr Muskeln bekommt man.',ok:false,why:'Schnelle Bewegungen arbeiten mit Schwung statt mit Muskelkraft. Das ist gefährlich.'},
+   {t:'Man trainiert pro Training nur einen Muskel.',ok:false,why:'Im Zirkel trainieren wir mehrere Muskelgruppen nacheinander.'},
+   {t:'Ich starte mit einem niedrigen Gewicht.',ok:true,why:'Mit wenig Gewicht lernst du zuerst die Technik (ca. 20 Wiederholungen).'}
+  ]},
+ {type:'list',title:'Nennt 3 Übungen, mit denen ihr euch im Kraftraum aufwärmen könnt.',how:'Schreibt eure Ideen auf. Danach prüft ihr sie selbst.',
+  tip:'<b>Wortspeicher:</b> Laufband · Fahrrad-Ergometer · Crosstrainer · Rudergerät · Seilspringen · Hampelmann · Arme kreisen · Kniebeugen ohne Gewicht',
+  n:3,solution:'Passend sind Übungen, die den ganzen Körper warm machen oder die Gelenke locker bewegen, z. B. 5–10 Minuten Laufband, Fahrrad-Ergometer, Crosstrainer oder Rudergerät, Seilspringen, Hampelmann, Arme und Hüfte kreisen, Kniebeugen ohne Gewicht, Ausfallschritte.',
+  check:'Für jede passende Übung gibt es 1 Punkt. Hakt nur ab, was wirklich passt.'},
+ {type:'text',title:'Beschreibt eine Übung aus dem Krafttraining. Nennt mindestens zwei Punkte, auf die man achten muss.',how:'Schreibt eure Antwort auf. Danach prüft ihr sie mit der Checkliste.',
+  tip:'<b>Satzanfänge:</b> Die Übung heißt … · Zuerst … · Dann … · Ich achte darauf, dass …',
+  solution:'<b>Beispiel Beinpresse:</b> Setz dich in die Beinpresse, der Rücken liegt an der Lehne. Stell die Füße hüftbreit auf die Platte. Drück die Platte langsam weg, bis die Beine fast gestreckt sind. Lass sie langsam zurückkommen. <b>Achte darauf:</b> Knie nicht ganz durchdrücken, Knie zeigen zu den Zehen, Rücken bleibt an der Lehne, gleichmäßig atmen.',
+  checklist:['Wir haben die Übung genannt (z. B. Beinpresse).','Wir haben beschrieben, wie man startet (Startposition).','Wir haben beschrieben, wie die Bewegung geht.','Wir haben einen 1. Punkt genannt, auf den man achten muss.','Wir haben einen 2. Punkt genannt, auf den man achten muss.']}
+];
+Q.forEach(q=>q.max=q.type==='multi'?q.items.length:q.type==='single'?1:q.type==='list'?q.n:q.checklist.length);
+const MAX=Q.reduce((s,q)=>s+q.max,0);
+
+const KEY='kraftraum-check-v1';
+let S=load()||fresh();
+function fresh(){return {step:-1,group:'',members:'',ans:Q.map(q=>q.type==='multi'?q.items.map(()=>null):q.type==='single'?null:q.type==='list'?Array(q.n).fill(''):''),checked:Q.map(()=>false),self:Q.map(q=>q.type==='list'?Array(q.n).fill(false):q.type==='text'?q.checklist.map(()=>false):null),done:Q.map(()=>false),tips:Q.map(()=>false),pts:Q.map(()=>0),agree:false}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));return s&&s.ans&&s.ans.length===Q.length?s:null}catch(e){return null}}
+const total=()=>S.pts.reduce((a,b)=>a+b,0);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const col=i=>`var(${COLORS[i]})`;
+
+let lastTotal=total();
+function drawBar(){
+  const svg=document.getElementById('barbell');
+  const plates=[];S.pts.forEach((p,qi)=>{for(let k=0;k<p;k++)plates.push(qi)});
+  const t=plates.length, newOnes=t-lastTotal;
+  let h=`<rect x="6" y="31" width="388" height="8" rx="4" fill="var(--steel)"/>`+
+        `<rect x="88" y="24" width="8" height="22" rx="2" fill="var(--steel)"/><rect x="304" y="24" width="8" height="22" rx="2" fill="var(--steel)"/>`;
+  plates.forEach((qi,i)=>{
+    const side=i%2, k=Math.floor(i/2), w=7, gap=2;
+    const x= side===0 ? 86-(k+1)*(w+gap) : 314+k*(w+gap);
+    const cls=i>=t-newOnes&&newOnes>0?' class="plate-new"':'';
+    h+=`<rect${cls} x="${x}" y="5" width="${w}" height="60" rx="2" fill="${col(qi)}"/>`;
+  });
+  if(!t) h+=`<text x="200" y="20" text-anchor="middle" font-size="12" fill="var(--muted)" font-family="Atkinson Hyperlegible, sans-serif">Jeder Punkt = eine Hantelscheibe</text>`;
+  svg.innerHTML=h; lastTotal=t;
+  document.getElementById('scoreNow').textContent=t;
+  document.getElementById('scoreMax').textContent=MAX;
+  document.getElementById('groupLabel').textContent=S.group?`Gruppe ${S.group}`:'Fitness – Gruppenaufgabe';
+}
+
+const app=document.getElementById('app');
+function render(){
+  drawBar(); save();
+  if(S.step<0) return renderStart();
+  if(S.step>=Q.length) return renderEnd();
+  renderQ(S.step);
+}
+
+function renderStart(){
+  app.innerHTML=`<section class="card">
+    <span class="eyebrow">Sport 8 · Kraftraum</span>
+    <h1>Kraftraum-Check</h1>
+    <p>Ihr beantwortet 6 Fragen als Gruppe. Für jede richtige Antwort ladet ihr eine Hantelscheibe auf eure Stange.</p>
+    <ol class="steps">
+      <li><span><b>Lesen:</b> Eine Person liest die Frage laut vor.</span></li>
+      <li><span><b>Besprechen:</b> Jede Person sagt ihre Meinung. Begründet eure Antwort.</span></li>
+      <li><span><b>Einig werden:</b> Wählt gemeinsam eine Antwort aus.</span></li>
+      <li><span><b>Prüfen:</b> Drückt auf „Prüfen“. Jetzt seht ihr die Lösung. Ändern geht dann nicht mehr.</span></li>
+    </ol>
+    <div class="levels">
+      <div class="level"><b>Starter</b>Ihr dürft bei jeder Frage den Tipp öffnen.</div>
+      <div class="level"><b>Profi</b>Ihr löst alles ohne Tipp. Am Ende seht ihr, wie oft ihr einen Tipp gebraucht habt.</div>
+    </div>
+    <label for="g">Name der Gruppe</label>
+    <input type="text" id="g" maxlength="30" placeholder="z. B. Team Beinpresse" value="${esc(S.group)}">
+    <label for="m">Wer ist in der Gruppe? (optional)</label>
+    <input type="text" id="m" maxlength="120" placeholder="Vornamen" value="${esc(S.members)}">
+    <div class="actions"><span></span><button class="btn" id="go">Los geht's</button></div>
+  </section>`;
+  const g=document.getElementById('g'),m=document.getElementById('m'),go=document.getElementById('go');
+  const upd=()=>{go.disabled=!g.value.trim()};upd();
+  g.oninput=upd;
+  go.onclick=()=>{S.group=g.value.trim();S.members=m.value.trim();S.step=0;render();scrollTo(0,0)};
+}
+
+function renderQ(i){
+  const q=Q[i], checked=S.checked[i], done=S.done[i];
+  let body='';
+  if(q.type==='multi'){
+    body=`<div class="stmts">`+q.items.map((it,k)=>{
+      const a=S.ans[i][k]; let res='',why='';
+      if(checked){const right=a===it.ok;res=right?'res-ok':'res-bad';
+        why=`<p class="why"><span class="mark ${right?'ok':'bad'}">${right?'✓ Richtig.':'✗ Nicht richtig.'}</span> Dieser Satz ${it.ok?'stimmt':'stimmt nicht'}. ${esc(it.why)}</p>`}
+      return `<div class="stmt ${res}"><span class="stmt-t">${esc(it.t)}</span>
+        <div class="choice" role="group" aria-label="${esc(it.t)}">
+          <button data-k="${k}" data-v="1" aria-pressed="${a===true}" ${checked?'disabled':''}>stimmt</button>
+          <button data-k="${k}" data-v="0" aria-pressed="${a===false}" ${checked?'disabled':''}>stimmt nicht</button>
+        </div>${why}</div>`}).join('')+`</div>`;
+  } else if(q.type==='single'){
+    body=`<div class="opts">`+q.opts.map((o,k)=>{
+      let res='';if(checked){if(k===q.correct)res='res-ok';else if(S.ans[i]===k)res='res-bad'}
+      return `<button class="opt ${res}" data-k="${k}" aria-pressed="${S.ans[i]===k}" ${checked?'disabled':''}>${esc(o)}</button>`}).join('')+`</div>`;
+    if(checked){const r=S.ans[i]===q.correct;body+=`<p class="why"><span class="mark ${r?'ok':'bad'}">${r?'✓ Richtig.':'✗ Nicht richtig.'}</span> ${esc(q.why)}</p>`}
+  } else if(q.type==='list'){
+    body=S.ans[i].map((v,k)=>`<label for="l${k}">Übung ${k+1}</label><input type="text" id="l${k}" data-k="${k}" value="${esc(v)}" ${checked?'disabled':''}>`).join('');
+    if(checked){body+=`<div class="solution"><p>${q.solution}</p><p><b>${q.check}</b></p>`+
+      S.ans[i].map((v,k)=>`<label class="chk"><input type="checkbox" data-s="${k}" ${S.self[i][k]?'checked':''} ${done||!v.trim()?'disabled':''}><span>„${esc(v||'– leer –')}“ passt</span></label>`).join('')+`</div>`}
+  } else {
+    body=`<label for="tx">Eure Antwort</label><textarea id="tx" ${checked?'disabled':''}>${esc(S.ans[i])}</textarea>`;
+    if(checked){body+=`<div class="solution"><p>${q.solution}</p><p><b>Checkliste: Hakt ab, was in eurer Antwort steht. Jeder Haken = 1 Punkt.</b></p>`+
+      q.checklist.map((c,k)=>`<label class="chk"><input type="checkbox" data-s="${k}" ${S.self[i][k]?'checked':''} ${done?'disabled':''}><span>${esc(c)}</span></label>`).join('')+`</div>`}
+  }
+  const filled=isFilled(i);
+  const tip=S.tips[i]?`<div class="tipbox"><b>Tipp:</b> ${q.tip}</div>`:'';
+  let foot='';
+  if(!checked){
+    foot=`<label class="agree"><input type="checkbox" id="agree" ${S.agree?'checked':''}> Wir haben besprochen und sind uns einig.</label>
+      <div class="actions">${S.tips[i]?'<span></span>':'<button class="btn ghost small" id="tipb">Tipp zeigen</button>'}
+      <button class="btn" id="chk" ${filled&&S.agree?'':'disabled'}>Prüfen</button></div>`;
+  } else if((q.type==='list'||q.type==='text')&&!done){
+    foot=`<div class="actions"><span class="how">Seid ehrlich – im Zweifel fragt eure Lehrkraft.</span><button class="btn" id="take">Punkte eintragen</button></div>`;
+  } else {
+    foot=`<div class="actions"><span class="feedback" style="color:${col(i)}">+${S.pts[i]} von ${q.max}</span><button class="btn" id="next">${i===Q.length-1?'Ergebnis ansehen':'Nächste Frage'}</button></div>`;
+  }
+  app.innerHTML=`<section class="card">
+    <div class="qhead"><span class="qnum" style="background:${col(i)}">${i+1}</span>
+      <div><span class="eyebrow">Frage ${i+1} von ${Q.length}</span> <span class="pts">· ${q.max} ${q.max===1?'Punkt':'Punkte'}</span></div></div>
+    <h2>${esc(q.title)}</h2><p class="how">${q.how}</p>${tip}${body}${foot}</section>`;
+  bindQ(i);
+}
+
+function isFilled(i){const q=Q[i],a=S.ans[i];
+  if(q.type==='multi')return a.every(x=>x!==null);
+  if(q.type==='single')return a!==null;
+  if(q.type==='list')return a.some(x=>x.trim());
+  return a.trim().length>0;}
+
+function bindQ(i){
+  const q=Q[i];
+  app.querySelectorAll('.choice button').forEach(b=>b.onclick=()=>{S.ans[i][+b.dataset.k]=b.dataset.v==='1';render()});
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{S.ans[i]=+b.dataset.k;render()});
+  app.querySelectorAll('input[data-k]').forEach(inp=>inp.oninput=()=>{S.ans[i][+inp.dataset.k]=inp.value;save();refreshBtn(i)});
+  const tx=document.getElementById('tx'); if(tx) tx.oninput=()=>{S.ans[i]=tx.value;save();refreshBtn(i)};
+  const ag=document.getElementById('agree'); if(ag) ag.onchange=()=>{S.agree=ag.checked;save();refreshBtn(i)};
+  const tb=document.getElementById('tipb'); if(tb) tb.onclick=()=>{S.tips[i]=true;render()};
+  const ck=document.getElementById('chk'); if(ck) ck.onclick=()=>{S.checked[i]=true;S.agree=false;
+    if(q.type==='multi'){S.pts[i]=q.items.reduce((s,it,k)=>s+(S.ans[i][k]===it.ok?1:0),0);S.done[i]=true}
+    if(q.type==='single'){S.pts[i]=S.ans[i]===q.correct?1:0;S.done[i]=true}
+    render()};
+  app.querySelectorAll('input[data-s]').forEach(c=>c.onchange=()=>{S.self[i][+c.dataset.s]=c.checked;save()});
+  const tk=document.getElementById('take'); if(tk) tk.onclick=()=>{S.pts[i]=S.self[i].filter(Boolean).length;S.done[i]=true;render()};
+  const nx=document.getElementById('next'); if(nx) nx.onclick=()=>{S.step++;render();scrollTo(0,0)};
+}
+function refreshBtn(i){const b=document.getElementById('chk');if(b)b.disabled=!(isFilled(i)&&S.agree)}
+
+function renderEnd(){
+  const t=total(), pct=Math.round(t/MAX*100), tips=S.tips.filter(Boolean).length;
+  const v= pct>=90?['Kraftraum-Profis!','Ihr wisst genau, wie man sicher trainiert.']:
+           pct>=70?['Starkes Team!','Ihr wisst schon sehr viel. Schaut euch die roten Antworten noch einmal an.']:
+           pct>=50?['Auf einem guten Weg!','Einiges sitzt schon. Lest die Erklärungen bei den Fragen mit wenig Punkten noch einmal.']:
+                   ['Weiter üben!','Lest die Erklärungen zusammen noch einmal durch und fragt eure Lehrkraft.'];
+  const weak=Q.map((q,i)=>({i,r:S.pts[i]/q.max})).filter(x=>x.r<0.6).map(x=>x.i+1);
+  app.innerHTML=`<section class="card">
+    <span class="eyebrow">Ergebnis · Gruppe ${esc(S.group)}${S.members?' · '+esc(S.members):''}</span>
+    <h1>${v[0]}</h1>
+    <p class="result-big">${t}<span style="font-size:.45em;color:var(--muted)"> / ${MAX}</span></p>
+    <p>Das sind <b>${pct} %</b>. ${v[1]}</p>
+    <p>${tips===0?'<b>Profi-Niveau:</b> Ihr habt keinen Tipp gebraucht.':`Ihr habt <b>${tips}-mal</b> einen Tipp benutzt.`}</p>
+    <div class="rows">${Q.map((q,i)=>`<div class="row"><span class="qnum" style="background:${col(i)};width:32px;height:32px;font-size:1.1rem">${i+1}</span>
+      <div class="track"><div class="fill" style="width:${S.pts[i]/q.max*100}%;background:${col(i)}"></div></div>
+      <span>${S.pts[i]} / ${q.max}</span></div>`).join('')}</div>
+    ${weak.length?`<p class="how">Wiederholt besonders Frage ${weak.join(', ')}.</p>`:''}
+    <div style="display:grid;gap:8px"><span class="eyebrow">Euer Ergebnis-Code</span>
+      <span class="code" id="code">${makeCode(S.pts,tips)}</span>
+      <p class="how">Zeigt eurer Lehrkraft diesen Code und euren Gruppennamen.</p></div>
+    <div class="actions"><button class="btn ghost" id="back">Fragen ansehen</button><div class="confirm" id="resetWrap"><button class="btn" id="reset">Neue Gruppe starten</button></div></div>
+  </section>`;
+  document.getElementById('back').onclick=()=>{S.step=0;render();scrollTo(0,0)};
+  document.getElementById('reset').onclick=()=>{document.getElementById('resetWrap').innerHTML=`<span>Alle Antworten löschen?</span><button class="btn ghost small" id="no">Nein</button><button class="btn small" id="yes">Ja, löschen</button>`;
+    document.getElementById('no').onclick=render;
+    document.getElementById('yes').onclick=()=>{S=fresh();lastTotal=0;render();scrollTo(0,0)}};
+}
+
+/* ---------- Ergebnis-Code ---------- */
+const ALPHA='ABCDEFGHJKLMNPQRSTUVWXYZ';
+function checkChar(digits){let s=0;digits.forEach((d,i)=>s+=d*(i+3)+i);return ALPHA[s%ALPHA.length]}
+function makeCode(pts,tips){const d=[...pts,tips];return d.slice(0,6).join('')+'-'+tips+checkChar(d)}
+
+render();
+</script>
+</body>
+</html>
