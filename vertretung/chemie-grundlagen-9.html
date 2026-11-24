@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chemie-Labor Grundlagen – Vertretung Jg. 9</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE: freundlich, klar, Schullabor – kurze Sätze, große Tippflächen
+   IDEA: ein Laborpass mit 5 Stationen, die man abstempelt
+   PICTURE: die Stationen selbst – Teilchen-Simulation und Atom-Baukasten
+   COLOUR and TYPE: tiefes Tintenblau, weiß, Akzent Sonnengelb; richtig = blau ✓, falsch = orange ✗ (rot/grün-sicher); Atkinson Hyperlegible
+   LAYOUT: Kopfband mit Niveau-Schalter, Stationsleiste, eine Station pro Ansicht */
+:root{color-scheme:light dark;
+--bg:light-dark(#f3f6fb,#0c1626);--card:light-dark(#fff,#14233a);--ink:light-dark(#0f1e33,#e9eff8);
+--muted:light-dark(#4a5a70,#a8b6c9);--line:light-dark(#d6dfeb,#2a3d59);--deep:light-dark(#0f2a4a,#081424);
+--acc:#ffc93c;--ok:light-dark(#1d64c4,#7ab2ff);--okbg:light-dark(#e6f0fd,#16325a);
+--bad:light-dark(#b45300,#ffab5c);--badbg:light-dark(#fff1e3,#3d2610);--soft:light-dark(#eaf0f8,#1a2c47)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 "Atkinson Hyperlegible",system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{line-height:1.1;text-wrap:balance;margin:0 0 .4em}
+h1{font-size:clamp(30px,5vw,46px)}h2{font-size:clamp(26px,4vw,36px)}h3{font-size:20px}
+.top{background:var(--deep);color:#fff;padding:clamp(20px,3vw,36px) max(5vw,16px) 0}
+.back{display:inline-flex;align-items:center;min-height:44px;color:#cfdbeb;font-weight:700;text-underline-offset:3px;margin-bottom:6px}.back:hover{color:#fff}
+.top p{color:#cfdbeb;margin:0 0 16px;max-width:60ch}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.lvl{display:flex;background:#ffffff1a;border-radius:999px;padding:4px}
+.lvl button{min-height:44px;padding:0 18px;border:0;border-radius:999px;background:none;color:#fff;font:inherit;font-weight:700;cursor:pointer}
+.lvl button[aria-pressed=true]{background:var(--acc);color:#14213a}
+.pbar{font-size:15px;color:#cfdbeb}
+nav{display:flex;gap:6px;overflow-x:auto;margin-top:18px;scrollbar-width:none}
+nav a{flex:none;color:#cfdbeb;text-decoration:none;padding:12px 16px;border-radius:12px 12px 0 0;font-weight:700;min-height:44px}
+nav a.on{background:var(--bg);color:var(--ink)}
+nav a .d{color:var(--acc)}
+main{max-width:1100px;margin:0 auto;padding:clamp(20px,3vw,40px) max(4vw,16px) 60px}
+.view{display:none}.view.on{display:block}
+.lead{font-size:18px;max-width:62ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px;margin:20px 0}
+.st{display:flex;flex-direction:column;gap:6px;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:18px;text-decoration:none;color:var(--ink);min-height:150px}
+.st:hover,.st:focus-visible{border-color:var(--ok)}
+.st svg{width:54px;height:54px}.st b{font-size:19px}.st span{color:var(--muted);font-size:15px}
+.st .stamp{margin-top:auto;font-weight:700;color:var(--ok)}
+.two{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;align-items:start}
+@media(max-width:820px){.two{grid-template-columns:minmax(0,1fr)}}
+.box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,2.5vw,24px)}
+.merke{background:var(--soft);border-radius:14px;padding:14px 18px;margin:14px 0}
+.merke>b:first-child{display:block;margin-bottom:4px}
+.merke ul{margin:4px 0 0;padding-left:20px}
+.ws{border:2px dashed var(--line);border-radius:14px;padding:10px 16px;margin:14px 0}
+.ws summary{font-weight:700;cursor:pointer;min-height:36px;display:flex;align-items:center}
+.ws dl{margin:6px 0 4px}.ws dt{font-weight:700}.ws dd{margin:0 0 8px;color:var(--muted)}
+.task{font-weight:700;margin:0 0 10px}
+.op{background:var(--acc);color:#14213a;border-radius:6px;padding:1px 7px;font-size:15px}
+.prog{height:8px;background:var(--soft);border-radius:9px;overflow:hidden}.prog span{display:block;height:100%;background:var(--ok);transition:width .3s}
+.cnt{color:var(--muted);font-size:15px;margin:8px 0}
+.item{font-size:clamp(22px,3.4vw,28px);font-weight:700;background:var(--soft);border-radius:14px;padding:22px;text-align:center;margin-bottom:12px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:10px}
+.opt,.btn{min-height:52px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;font:inherit;font-weight:700;padding:10px 16px;cursor:pointer;text-align:center}
+.opt:not(:disabled):hover{border-color:var(--ok)}
+.opt.ok{border-color:var(--ok);background:var(--okbg)}.opt.ok::before{content:"✓ "}
+.opt.bad{border-color:var(--bad);background:var(--badbg)}.opt.bad::before{content:"✗ "}
+.opt:disabled{cursor:default;opacity:1}
+.btn.pri{background:var(--ok);border-color:var(--ok);color:#fff}
+:root[data-theme=dark] .btn.pri{color:#081424}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .btn.pri{color:#081424}}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.fb{margin-top:12px}.fb p{border-radius:12px;padding:12px 16px;margin:0 0 10px}
+.okt{background:var(--okbg);border-left:6px solid var(--ok)}.badt{background:var(--badbg);border-left:6px solid var(--bad)}
+.tip{margin:0 0 12px}.tip summary{cursor:pointer;font-weight:700;color:var(--ok);min-height:40px;display:flex;align-items:center}
+.fin{text-align:center;padding:10px}.fin .big{font-size:32px;font-weight:700;margin:6px 0}
+.fin .btn{margin:6px}
+.fig{position:relative;height:clamp(240px,38vw,340px);border-radius:16px;overflow:hidden;background:var(--soft)}
+.fig>canvas{position:absolute;inset:0;width:100%;height:100%}
+.therm{display:flex;align-items:center;gap:14px;margin:16px 0 8px;flex-wrap:wrap}
+.therm input{flex:1 1 220px;accent-color:var(--ok);height:44px}
+.temp{font-size:30px;font-weight:700;white-space:nowrap;min-width:4.5ch}
+.state{font-size:22px;font-weight:700;margin:4px 0}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chips .btn{min-height:44px;padding:6px 14px;font-size:15px}
+.atom{width:100%;max-width:360px;display:block;margin:0 auto}
+.atom .shell{fill:none;stroke:var(--line);stroke-width:2;stroke-dasharray:4 5}
+.atom .pr{fill:#1d64c4;stroke:#fff;stroke-width:1.2}.atom .ne{fill:#9aa4b5;stroke:#fff;stroke-width:1.2}
+.atom .el{fill:var(--acc);stroke:#8a6400;stroke-width:1.2}
+.ctl{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:8px;align-items:center;margin:8px 0}
+.ctl .btn{width:52px;padding:0;font-size:24px}.ctl output{font-size:24px;font-weight:700;width:2.2ch;text-align:center}
+.dot{display:inline-block;width:16px;height:16px;border-radius:50%;vertical-align:-2px;margin-right:6px;border:1.5px solid #fff}
+.info{background:var(--soft);border-radius:14px;padding:12px 16px;margin:12px 0}
+.info big{font-size:24px;font-weight:700;display:block}
+.pass td,.pass th{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}.pass td:last-child,.pass th:last-child{text-align:right;white-space:nowrap}
+table{border-collapse:collapse;width:100%}
+.name{font:inherit;font-size:18px;min-height:48px;border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--card);color:var(--ink);width:min(100%,320px)}
+.teach{margin-top:34px}.teach summary{font-weight:700;cursor:pointer;min-height:44px;display:flex;align-items:center}
+.small{font-size:15px;color:var(--muted)}
+@media(prefers-reduced-motion:reduce){.prog span{transition:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="back" href="../#vertretung">← Zurück zur Lehrerseite</a>
+  <div class="row">
+    <div>
+      <h1>Chemie-Labor: Grundlagen</h1>
+      <p>Vier Stationen und ein Abschluss-Check. Arbeite in deinem Tempo. Am Ende zeigst du deinen Laborpass.</p>
+    </div>
+    <div>
+      <div class="lvl" role="group" aria-label="Niveau wählen">
+        <button id="lv-basis" aria-pressed="true">Basis</button>
+        <button id="lv-erw" aria-pressed="false">Erweitert</button>
+      </div>
+      <p class="pbar" id="pbar" style="margin:8px 0 0;text-align:right"></p>
+    </div>
+  </div>
+  <nav id="nav" aria-label="Stationen"></nav>
+</header>
+
+<main>
+<!-- START -->
+<section class="view" id="v-start">
+  <h2>So funktioniert's</h2>
+  <p class="lead">Wähle oben dein Niveau. <b>Basis</b> gibt dir Tipps und einen Wortspeicher. <b>Erweitert</b> hat mehr und schwierigere Aufgaben. Du kannst jederzeit wechseln.</p>
+  <div class="grid" id="hub"></div>
+  <details class="teach box">
+    <summary>Für die Lehrkraft</summary>
+    <table class="pass"><thead><tr><th>Phase</th><th>Inhalt</th><th>Zeit</th></tr></thead><tbody>
+      <tr><td>Start</td><td>Niveau wählen, Ablauf erklären</td><td>5 Min.</td></tr>
+      <tr><td>Station 1</td><td>Reinstoffe und Gemische ordnen</td><td>8 Min.</td></tr>
+      <tr><td>Station 2</td><td>Aggregatzustände im Teilchenmodell</td><td>10 Min.</td></tr>
+      <tr><td>Station 3</td><td>Atom bauen (Kern-Hülle-Modell)</td><td>10 Min.</td></tr>
+      <tr><td>Station 4</td><td>Physikalischer Vorgang oder chemische Reaktion</td><td>7 Min.</td></tr>
+      <tr><td>Check</td><td>Abschluss-Quiz, Laborpass zeigen</td><td>5 Min.</td></tr>
+    </tbody></table>
+    <p class="small">KLP NW Gesamtschule Sek I, Chemie: Inhaltsfeld 1 „Stoffe und Stoffeigenschaften“ (Reinstoffe/Stoffgemische einteilen, UF3; Aggregatzustände mit Teilchenmodell erklären, E8; Stoffumwandlungen als chemische Reaktionen von physikalischen Veränderungen abgrenzen, UF2/UF3) und Inhaltsfeld 5 „Elemente und ihre Ordnung“ (Atom mit Kern-Hülle-Modell beschreiben, UF1; Atom und Ion unterscheiden, E7). Es werden keine Namen oder Ergebnisse gespeichert; nur der Fortschritt bleibt im Browser des iPads.</p>
+  </details>
+</section>
+
+<!-- STATION 1 -->
+<section class="view" id="v-stoffe">
+  <h2>Station 1: Stoffe ordnen</h2>
+  <div class="two">
+    <div>
+      <p class="lead">Alles um dich herum besteht aus <b>Stoffen</b>. Manche Stoffe sind rein. Andere sind eine Mischung aus mehreren Stoffen.</p>
+      <div class="merke"><b>Merke</b>
+        <ul><li><b>Reinstoff:</b> besteht nur aus einem Stoff. Er hat feste Eigenschaften, z.&nbsp;B. eine bestimmte Siedetemperatur.</li>
+        <li><b>Gemisch:</b> besteht aus mehreren Stoffen. Man kann es trennen, z.&nbsp;B. durch Sieben, Filtrieren oder Eindampfen.</li></ul></div>
+      <details class="ws"><summary>Wortspeicher</summary><dl>
+        <dt>Stoff</dt><dd>Das, woraus ein Gegenstand besteht. Beispiel: Ein Löffel ist aus dem Stoff Eisen.</dd>
+        <dt>Eigenschaft</dt><dd>Woran man einen Stoff erkennt: Farbe, Geruch, Löslichkeit, Schmelztemperatur …</dd>
+        <dt>Eindampfen</dt><dd>Man erhitzt eine Lösung, bis das Wasser weg ist. Der gelöste Stoff bleibt übrig.</dd>
+        <dt>Legierung</dt><dd>Ein Gemisch aus Metallen. Beispiel: Messing aus Kupfer und Zink.</dd></dl></details>
+    </div>
+    <div class="box">
+      <p class="task"><span class="op">Ordne zu</span> Ist der Stoff ein Reinstoff oder ein Gemisch?</p>
+      <div id="a-stoffe"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATION 2 -->
+<section class="view" id="v-teilchen">
+  <h2>Station 2: Teilchen in Bewegung</h2>
+  <p class="lead">Alle Stoffe bestehen aus winzigen <b>Teilchen</b>. Ob ein Stoff fest, flüssig oder gasförmig ist, hängt davon ab, wie sich die Teilchen bewegen.</p>
+  <div class="two">
+    <div class="box">
+      <p class="task"><span class="op">Beobachte</span> Schiebe den Regler. Was machen die Wasser-Teilchen?</p>
+      <div class="fig"><canvas id="cv" aria-label="Simulation der Wasser-Teilchen"></canvas></div>
+      <div class="therm"><label for="temp" class="temp" id="tout">25 °C</label><input id="temp" type="range" min="-20" max="120" value="25" aria-label="Temperatur"></div>
+      <div class="chips"><button class="btn" data-t="-10">Eis −10 °C</button><button class="btn" data-t="25">Wasser 25 °C</button><button class="btn" data-t="110">Dampf 110 °C</button></div>
+      <p class="state" id="sname"></p><p id="stext" style="margin:0"></p>
+    </div>
+    <div>
+      <div class="merke"><b>Merke</b>
+        <ul><li><b>fest:</b> Teilchen sitzen eng auf festen Plätzen. Sie schwingen nur hin und her.</li>
+        <li><b>flüssig:</b> Teilchen sind nah beieinander, aber sie können aneinander vorbeigleiten.</li>
+        <li><b>gasförmig:</b> Teilchen sind weit voneinander entfernt und fliegen schnell durch den Raum.</li>
+        <li>Je wärmer, desto schneller bewegen sich die Teilchen.</li></ul></div>
+      <details class="ws"><summary>Wortspeicher</summary><dl>
+        <dt>Aggregatzustand</dt><dd>Die Form, in der ein Stoff vorliegt: fest, flüssig oder gasförmig.</dd>
+        <dt>Schmelzen / Erstarren</dt><dd>fest → flüssig / flüssig → fest. Bei Wasser: 0 °C.</dd>
+        <dt>Verdampfen / Kondensieren</dt><dd>flüssig → gasförmig / gasförmig → flüssig. Wasser siedet bei 100 °C.</dd>
+        <dt>Teilchenmodell</dt><dd>Eine Vorstellung: Stoffe bestehen aus kleinen Kugeln, die sich bewegen.</dd></dl></details>
+      <div class="box"><p class="task"><span class="op">Nenne</span> Beantworte die Fragen.</p><div id="a-teilchen"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATION 3 -->
+<section class="view" id="v-atom">
+  <h2>Station 3: Baue ein Atom</h2>
+  <p class="lead">Teilchen bestehen aus <b>Atomen</b>. Ein Atom hat einen Kern in der Mitte und eine Hülle außen herum.</p>
+  <div class="two">
+    <div class="box">
+      <svg class="atom" id="atomsvg" viewBox="0 0 300 300" role="img" aria-label="Dein Atom im Schalenmodell"></svg>
+      <p class="small" style="text-align:center"><span class="dot" style="background:#1d64c4"></span>Proton (+) &nbsp; <span class="dot" style="background:#9aa4b5"></span>Neutron (0) &nbsp; <span class="dot" style="background:#ffc93c;border-color:#8a6400"></span>Elektron (−)</p>
+      <div class="info" id="ainfo" aria-live="polite"></div>
+    </div>
+    <div>
+      <div class="box">
+        <p class="task"><span class="op">Baue</span> <span id="atask"></span></p>
+        <details class="tip" id="ahintbox"><summary>Tipp anzeigen</summary><p id="ahint"></p></details>
+        <div class="ctl"><span>Protonen</span><button class="btn" data-c="p" data-d="-1" aria-label="Proton weg">−</button><output id="o-p">0</output><button class="btn" data-c="p" data-d="1" aria-label="Proton dazu">+</button></div>
+        <div class="ctl"><span>Neutronen</span><button class="btn" data-c="n" data-d="-1" aria-label="Neutron weg">−</button><output id="o-n">0</output><button class="btn" data-c="n" data-d="1" aria-label="Neutron dazu">+</button></div>
+        <div class="ctl"><span>Elektronen</span><button class="btn" data-c="e" data-d="-1" aria-label="Elektron weg">−</button><output id="o-e">0</output><button class="btn" data-c="e" data-d="1" aria-label="Elektron dazu">+</button></div>
+        <p style="margin:14px 0 0"><button class="btn pri" id="acheck">Prüfen</button> <button class="btn" id="areset">Leeren</button></p>
+        <div class="fb" id="afb" aria-live="polite"></div>
+      </div>
+      <div class="merke"><b>Merke</b>
+        <ul><li><b>Kern:</b> Protonen (positiv) und Neutronen (ohne Ladung).</li>
+        <li><b>Hülle:</b> Elektronen (negativ) auf Schalen. Die 1. Schale fasst 2, die 2. und 3. Schale fassen hier je 8 Elektronen.</li>
+        <li>Die Zahl der Protonen bestimmt das Element. Sie heißt <b>Ordnungszahl</b>.</li>
+        <li>Gleich viele Protonen und Elektronen: Das Atom ist <b>neutral</b>.</li></ul></div>
+      <details class="ws"><summary>Wortspeicher</summary><dl>
+        <dt>Element</dt><dd>Ein Stoff aus nur einer Atomsorte, z.&nbsp;B. Gold oder Sauerstoff.</dd>
+        <dt>Ordnungszahl</dt><dd>Anzahl der Protonen. Sie steht im Periodensystem.</dd>
+        <dt>Massenzahl</dt><dd>Protonen + Neutronen zusammen.</dd>
+        <dt>Ion</dt><dd>Ein Atom, das Elektronen abgegeben oder aufgenommen hat. Es ist geladen.</dd></dl></details>
+    </div>
+  </div>
+</section>
+
+<!-- STATION 4 -->
+<section class="view" id="v-reaktion">
+  <h2>Station 4: Chemische Reaktion?</h2>
+  <div class="two">
+    <div>
+      <p class="lead">Stoffe können sich verändern. Manchmal ändert sich nur die Form. Manchmal entsteht ein ganz <b>neuer Stoff</b>.</p>
+      <div class="merke"><b>Merke</b>
+        <ul><li><b>Physikalischer Vorgang:</b> Der Stoff bleibt gleich. Nur Form oder Zustand ändern sich. Beispiel: Eis schmilzt zu Wasser.</li>
+        <li><b>Chemische Reaktion:</b> Es entstehen neue Stoffe mit neuen Eigenschaften. Dabei wird Energie abgegeben oder aufgenommen. Beispiel: Holz verbrennt zu Asche und Gasen.</li></ul></div>
+      <details class="ws"><summary>Wortspeicher</summary><dl>
+        <dt>Stoffumwandlung</dt><dd>Aus Ausgangsstoffen werden neue Stoffe (Produkte).</dd>
+        <dt>Energie</dt><dd>Zeigt sich z.&nbsp;B. als Wärme, Licht oder Knall.</dd>
+        <dt>Anzeichen</dt><dd>Neue Farbe, neuer Geruch, Gas (Bläschen), Wärme oder Licht.</dd></dl></details>
+    </div>
+    <div class="box">
+      <p class="task"><span class="op">Ordne zu</span> Was passiert hier?</p>
+      <div id="a-reaktion"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CHECK -->
+<section class="view" id="v-check">
+  <h2>Abschluss-Check</h2>
+  <p class="lead">Zeig, was du gelernt hast. Lies jede Frage genau.</p>
+  <div class="box" style="max-width:760px"><div id="a-check"></div></div>
+</section>
+
+<!-- PASS -->
+<section class="view" id="v-pass">
+  <h2>Dein Laborpass</h2>
+  <p class="lead">Zeige diese Seite am Ende der Stunde deiner Lehrkraft.</p>
+  <div class="box" style="max-width:760px">
+    <p><label for="nm"><b>Dein Vorname</b></label><br><input id="nm" class="name" autocomplete="off"></p>
+    <p class="small">Der Name wird nicht gespeichert.</p>
+    <table class="pass"><thead><tr><th>Station</th><th>Ergebnis</th></tr></thead><tbody id="ptab"></tbody></table>
+    <p id="plevel" class="small"></p>
+    <div class="merke"><b>Schon fertig? Profi-Aufgaben</b>
+      <ul><li><span class="op">Erkläre</span> deinem Nachbarn mit dem Teilchenmodell, warum eine Pfütze in der Sonne verschwindet.</li>
+      <li><span class="op">Nenne</span> drei chemische Reaktionen aus deiner Küche.</li>
+      <li><span class="op">Wechsle</span> oben auf „Erweitert“ und löse die neuen Aufgaben.</li></ul></div>
+    <p><button class="btn" id="reset">Alles zurücksetzen</button></p>
+  </div>
+</section>
+</main>
+
+<script>
+{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const KEY='chemlab9-v1';
+let S={level:'basis',done:{},score:{}};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const erw=()=>S.level==='erw';
+
+const ICON={
+ stoffe:'<svg viewBox="0 0 54 54"><path d="M21 6h12M24 6v14L11 44a4 4 0 0 0 3.5 6h25a4 4 0 0 0 3.5-6L30 20V6" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/><path d="M16 36h22l5 9a2 2 0 0 1-2 3H13a2 2 0 0 1-2-3z" fill="#1d64c4" opacity=".8"/><circle cx="24" cy="42" r="2.5" fill="#ffc93c"/><circle cx="31" cy="39" r="2" fill="#fff"/></svg>',
+ teilchen:'<svg viewBox="0 0 54 54"><rect x="4" y="4" width="46" height="46" rx="8" fill="none" stroke="currentColor" stroke-width="3"/><g fill="#1d64c4"><circle cx="15" cy="38" r="5"/><circle cx="27" cy="40" r="5"/><circle cx="39" cy="37" r="5"/><circle cx="21" cy="28" r="5"/><circle cx="35" cy="16" r="5"/></g><path d="M41 12l5-4M44 18l5 1" stroke="#ffc93c" stroke-width="3" stroke-linecap="round"/></svg>',
+ atom:'<svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="4 4"/><circle cx="27" cy="27" r="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="4 4"/><circle cx="24" cy="25" r="4" fill="#1d64c4"/><circle cx="30" cy="29" r="4" fill="#9aa4b5"/><circle cx="27" cy="5" r="4" fill="#ffc93c"/><circle cx="39" cy="27" r="4" fill="#ffc93c"/></svg>',
+ reaktion:'<svg viewBox="0 0 54 54"><path d="M27 6c4 9 13 13 13 25a13 13 0 0 1-26 0c0-6 3-9 6-12 0 5 2 8 5 8-2-8 0-15 2-21z" fill="#ffc93c" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="M27 48c-5 0-7-4-6-8 1 2 3 3 4 3 0-4 1-7 3-9 2 4 5 6 5 9 0 3-2 5-6 5z" fill="#1d64c4"/></svg>',
+ check:'<svg viewBox="0 0 54 54"><rect x="8" y="5" width="38" height="44" rx="6" fill="none" stroke="currentColor" stroke-width="3"/><path d="M16 20l4 4 8-8M16 36l4 4 8-8" fill="none" stroke="#1d64c4" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 22h6M33 38h6" stroke="#ffc93c" stroke-width="3.5" stroke-linecap="round"/></svg>'
+};
+const ST=[
+ {id:'stoffe',n:'1',s:'Stoffe',t:'Stoffe ordnen',d:'Reinstoff oder Gemisch?'},
+ {id:'teilchen',n:'2',s:'Teilchen',t:'Teilchen in Bewegung',d:'fest, flüssig, gasförmig'},
+ {id:'atom',n:'3',s:'Atom',t:'Baue ein Atom',d:'Protonen, Neutronen, Elektronen'},
+ {id:'reaktion',n:'4',s:'Reaktion',t:'Chemische Reaktion?',d:'Neuer Stoff oder nicht?'},
+ {id:'check',n:'5',s:'Check',t:'Abschluss-Check',d:'Teste dein Wissen'}
+];
+
+/* ---------- Inhalte ---------- */
+const STOFFE=[
+ {t:'Gold',a:0,h:'Ein Goldring besteht nur aus einem einzigen Stoff.',x:'Gold ist ein Reinstoff. Es besteht nur aus Gold-Atomen.'},
+ {t:'Salzwasser',a:1,h:'Was ist alles im Meerwasser drin?',x:'Salzwasser ist ein Gemisch aus Salz und Wasser. Durch Eindampfen kann man es trennen.'},
+ {t:'Müsli',a:1,h:'Kannst du die Teile sehen und aussortieren?',x:'Müsli ist ein Gemisch. Haferflocken, Nüsse und Rosinen kann man aussortieren.'},
+ {t:'destilliertes Wasser',a:0,h:'Destilliert heißt: Alles andere wurde entfernt.',x:'Destilliertes Wasser ist ein Reinstoff. Es ist reines Wasser ohne gelöste Stoffe.'},
+ {t:'Luft',a:1,h:'Luft enthält verschiedene Gase.',x:'Luft ist ein Gemisch aus Stickstoff, Sauerstoff und anderen Gasen.'},
+ {t:'Zucker',a:0,h:'Im Zuckerpaket ist nur eine Sorte Stoff.',x:'Zucker ist ein Reinstoff.'},
+ {t:'Limonade',a:1,h:'Lies mal die Zutatenliste einer Limo.',x:'Limonade ist ein Gemisch aus Wasser, Zucker, Kohlenstoffdioxid und Aromen.'},
+ {t:'Kupfer',a:0,h:'Kupfer ist ein Metall und ein Element.',x:'Kupfer ist ein Reinstoff (ein Element).'},
+ {t:'Leitungswasser',a:1,e:1,x:'Leitungswasser ist ein Gemisch. Es enthält gelöste Mineralstoffe, z. B. Kalk.'},
+ {t:'Messing',a:1,e:1,x:'Messing ist ein Gemisch (eine Legierung) aus Kupfer und Zink.'},
+ {t:'Milch',a:1,e:1,x:'Milch ist ein Gemisch aus Wasser, Fett, Eiweiß, Milchzucker und Mineralstoffen.'},
+ {t:'Sauerstoff',a:0,e:1,x:'Reiner Sauerstoff ist ein Reinstoff (ein Element).'}
+];
+const TEILCHEN=[
+ {t:'Wasser bei 25 °C ist …',o:['fest','flüssig','gasförmig'],a:1,h:'Stell den Regler auf 25 °C.',x:'Zwischen 0 °C und 100 °C ist Wasser flüssig.'},
+ {t:'Was passiert mit den Teilchen, wenn du erwärmst?',o:['Sie werden größer.','Sie bewegen sich schneller.','Sie bleiben gleich.'],a:1,h:'Schiebe den Regler langsam nach rechts.',x:'Wärme macht die Teilchen schneller. Die Teilchen selbst werden nicht größer.'},
+ {t:'Im festen Zustand …',o:['sitzen die Teilchen auf festen Plätzen und schwingen.','fliegen die Teilchen frei herum.','gibt es keine Teilchen.'],a:0,x:'Im Eis sitzen die Teilchen eng auf festen Plätzen und schwingen nur.'},
+ {t:'Der Übergang von flüssig zu gasförmig heißt …',o:['Schmelzen','Verdampfen','Erstarren'],a:1,h:'Schau in den Wortspeicher.',x:'Flüssig → gasförmig heißt Verdampfen. Bei 100 °C siedet Wasser.'},
+ {t:'Der Übergang von gasförmig zu flüssig heißt …',o:['Kondensieren','Sublimieren','Schmelzen'],a:0,e:1,x:'Gasförmig → flüssig heißt Kondensieren. Beispiel: Ein kalter Spiegel beschlägt im Bad.'},
+ {t:'Warum riecht man Parfüm nach kurzer Zeit im ganzen Raum?',o:['Die Duft-Teilchen bewegen sich frei und verteilen sich.','Die Luft wird schwerer.','Der Duft wird durch Licht verteilt.'],a:0,e:1,x:'Gasteilchen bewegen sich ständig und verteilen sich von selbst im Raum. Das nennt man Diffusion.'},
+ {t:'Ändern sich die Teilchen selbst beim Schmelzen?',o:['Ja, es entstehen neue Teilchen.','Nein, nur ihr Abstand und ihre Bewegung ändern sich.'],a:1,e:1,x:'Beim Schmelzen bleiben es Wasser-Teilchen. Nur Ordnung, Abstand und Bewegung ändern sich.'}
+];
+const REAKTION=[
+ {t:'Eis schmilzt.',a:0,h:'Ist Wasser ein neuer Stoff oder immer noch Wasser?',x:'Physikalisch: Aus festem Wasser wird flüssiges Wasser. Der Stoff bleibt gleich.'},
+ {t:'Holz verbrennt.',a:1,h:'Was bleibt am Ende übrig?',x:'Chemisch: Es entstehen Asche und Gase. Dabei wird Wärme und Licht frei.'},
+ {t:'Zucker löst sich in Tee.',a:0,h:'Schmeckt der Tee danach süß?',x:'Physikalisch: Der Zucker ist noch da, nur verteilt. Man schmeckt ihn.'},
+ {t:'Ein Eisennagel rostet.',a:1,h:'Sieht Rost aus wie Eisen?',x:'Chemisch: Rost ist ein neuer Stoff mit neuer Farbe und anderen Eigenschaften.'},
+ {t:'Brot wird im Toaster braun.',a:1,h:'Kannst du den Toast wieder in weiches Brot zurückverwandeln?',x:'Chemisch: Es entstehen neue braune Stoffe mit neuem Geruch und Geschmack.'},
+ {t:'Wasser verdampft im Kochtopf.',a:0,h:'Was ist im Dampf drin?',x:'Physikalisch: Wasserdampf ist immer noch Wasser, nur gasförmig.'},
+ {t:'Backpulver und Essig schäumen.',a:1,h:'Woher kommen die vielen Bläschen?',x:'Chemisch: Es entsteht ein neues Gas (Kohlenstoffdioxid).'},
+ {t:'Ein Glas zerbricht.',a:0,h:'Sind die Scherben noch Glas?',x:'Physikalisch: Die Scherben sind immer noch Glas. Nur die Form ist anders.'},
+ {t:'Milch wird sauer.',a:1,e:1,x:'Chemisch: Bakterien machen aus Milchzucker Milchsäure, einen neuen Stoff.'},
+ {t:'Butter wird in der Pfanne flüssig.',a:0,e:1,x:'Physikalisch: Die Butter schmilzt nur. Beim Abkühlen wird sie wieder fest.'},
+ {t:'Ein Silberlöffel läuft schwarz an.',a:1,e:1,x:'Chemisch: Silber reagiert mit Schwefelverbindungen aus der Luft zu schwarzem Silbersulfid.'},
+ {t:'Eine Wunderkerze sprüht Funken.',a:1,e:1,x:'Chemisch: Metallpulver verbrennt. Es wird viel Energie als Licht und Wärme frei.'}
+];
+const CHECK=[
+ {t:'Was ist ein Reinstoff?',o:['Ein Stoff, der sauber aussieht','Ein Stoff, der nur aus einem einzigen Stoff besteht','Eine Mischung aus zwei Stoffen'],a:1,x:'Ein Reinstoff besteht nur aus einem Stoff, z. B. Gold oder Zucker.'},
+ {t:'Salzwasser ist …',o:['ein Reinstoff','ein Gemisch'],a:1,x:'Salzwasser ist ein Gemisch aus Salz und Wasser.'},
+ {t:'Bei welcher Temperatur siedet Wasser (normaler Luftdruck)?',o:['0 °C','37 °C','100 °C'],a:2,x:'Wasser siedet bei 100 °C und schmilzt bei 0 °C.'},
+ {t:'Im gasförmigen Zustand sind die Teilchen …',o:['weit voneinander entfernt und schnell','eng auf festen Plätzen','unbeweglich'],a:0,x:'Gasteilchen sind weit voneinander entfernt und bewegen sich schnell.'},
+ {t:'Woraus besteht der Atomkern?',o:['Elektronen und Protonen','Protonen und Neutronen','nur aus Elektronen'],a:1,x:'Im Kern sind Protonen und Neutronen. Die Elektronen sind in der Hülle.'},
+ {t:'Welches Teilchen ist negativ geladen?',o:['Proton','Neutron','Elektron'],a:2,x:'Elektronen sind negativ, Protonen positiv, Neutronen haben keine Ladung.'},
+ {t:'Woran erkennt man eine chemische Reaktion?',o:['Es entsteht ein neuer Stoff.','Der Stoff wird kleiner geschnitten.','Der Stoff wird nur warm.'],a:0,x:'Bei einer chemischen Reaktion entstehen neue Stoffe mit neuen Eigenschaften.'},
+ {t:'Was trägst du beim Experimentieren immer?',o:['eine Mütze','eine Schutzbrille','Handschuhe aus Wolle'],a:1,x:'Die Schutzbrille schützt deine Augen. Im Labor wird außerdem nicht gegessen und getrunken.'},
+ {t:'Wie viele Elektronen passen auf die erste Schale?',o:['2','8','18'],a:0,e:1,x:'Auf die erste Schale passen 2 Elektronen.'},
+ {t:'Was gibt die Ordnungszahl an?',o:['die Anzahl der Neutronen','die Anzahl der Protonen','das Gewicht in Gramm'],a:1,e:1,x:'Die Ordnungszahl ist die Anzahl der Protonen. Sie bestimmt das Element.'},
+ {t:'Ein Natrium-Atom gibt ein Elektron ab. Was entsteht?',o:['ein positiv geladenes Ion Na⁺','ein negativ geladenes Ion Na⁻','ein neues Element'],a:0,e:1,x:'Es gibt jetzt ein Proton mehr als Elektronen. Darum ist das Ion einfach positiv: Na⁺.'},
+ {t:'Holz verbrennt. Was passiert mit der Energie?',o:['Energie wird abgegeben (Wärme, Licht).','Energie wird nur aufgenommen.','Es gibt keine Energie.'],a:0,e:1,x:'Bei der Verbrennung wird Energie als Wärme und Licht abgegeben (exotherme Reaktion).'}
+];
+
+/* ---------- Karten-Trainer (für Ordnen und Quiz) ---------- */
+function trainer(id,items,buckets){
+ const box=$('#a-'+id);
+ const list=items.filter(i=>erw()||!i.e);
+ let i=0,right=0,done=false;
+ const r=()=>{
+  if(i>=list.length){
+   box.innerHTML=`<div class="fin"><p class="big">${right} von ${list.length} richtig</p><p>${right===list.length?'Super! Alles richtig.':'Gut gemacht! Lies die Erklärungen bei den Fehlern noch einmal.'}</p><button class="btn" data-a="again">Noch einmal</button><button class="btn pri" data-a="next">Weiter</button></div>`;
+   finish(id,right,list.length);return}
+  const it=list[i],opts=it.o||buckets;done=false;
+  box.innerHTML=`<div class="prog"><span style="width:${i/list.length*100}%"></span></div><p class="cnt">${i+1} von ${list.length}</p><div class="item">${it.t}</div>${!erw()&&it.h?`<details class="tip"><summary>Tipp anzeigen</summary><p>${it.h}</p></details>`:''}<div class="opts">${opts.map((b,k)=>`<button class="opt" data-k="${k}">${b}</button>`).join('')}</div><div class="fb" aria-live="polite"></div>`;
+ };
+ box.onclick=ev=>{
+  const b=ev.target.closest('button');if(!b)return;
+  if(b.dataset.k!==undefined&&!done){
+   done=true;const k=+b.dataset.k,it=list[i],ok=k===it.a;if(ok)right++;
+   box.querySelectorAll('.opt').forEach((x,j)=>{x.disabled=true;if(j===it.a)x.classList.add('ok');else if(j===k)x.classList.add('bad')});
+   box.querySelector('.fb').innerHTML=`<p class="${ok?'okt':'badt'}"><b>${ok?'✓ Richtig!':'✗ Nicht ganz.'}</b> ${it.x}</p><button class="btn pri" data-a="go">${i+1<list.length?'Nächste Karte':'Ergebnis ansehen'}</button>`;
+   box.querySelector('[data-a=go]').focus();
+  }else if(b.dataset.a==='go'){i++;r()}
+  else if(b.dataset.a==='again'){i=0;right=0;r()}
+  else if(b.dataset.a==='next'){next(id)}
+ };
+ r();
+}
+function finish(id,r,t){S.done[id]=true;S.score[id]=[r,t];save();chrome()}
+function next(id){const k=ST.findIndex(s=>s.id===id);location.hash=k<ST.length-1?ST[k+1].id:'pass'}
+
+/* ---------- Teilchen-Simulation ---------- */
+const cv=$('#cv'),ctx=cv.getContext('2d'),temp=$('#temp');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let W=300,H=200,raf=0,last=0;
+const P=Array.from({length:30},(_,i)=>{const a=Math.random()*6.28;return{x:.2+Math.random()*.6,y:.6+Math.random()*.3,vx:Math.cos(a),vy:Math.sin(a),lx:.5+((i%6)-2.5)*.1,ly:.9-Math.floor(i/6)*.11}});
+const size=()=>{const r=cv.getBoundingClientRect(),d=window.devicePixelRatio||1;W=r.width||300;H=r.height||200;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0)};
+const ro=new ResizeObserver(size);ro.observe(cv.parentElement);
+const STATES=[
+ ['fest – Eis','Die Teilchen sitzen eng auf festen Plätzen. Sie schwingen nur ein bisschen hin und her.'],
+ ['flüssig – Wasser','Die Teilchen sind nah beieinander. Sie gleiten aneinander vorbei. Darum kann Wasser fließen.'],
+ ['gasförmig – Wasserdampf','Die Teilchen sind weit voneinander entfernt. Sie fliegen schnell durch den ganzen Raum.']];
+const stateOf=T=>T<0?0:T<100?1:2;
+function showTemp(){const T=+temp.value,s=stateOf(T);$('#tout').textContent=(T<0?'−'+(-T):T)+' °C';$('#sname').textContent=STATES[s][0];$('#stext').textContent=STATES[s][1]}
+function frame(t){
+ const dt=Math.min(.05,last?(t-last)/1000:0);last=t;
+ const T=+temp.value,s=stateOf(T),f=reduce?.35:1;
+ const sp=(s===1?.1+T/100*.18:.55+(T-100)/20*.25)*f;
+ P.forEach((p,i)=>{
+  if(s===0){const j=(.004+(T+20)/20*.008)*f,tx=p.lx+Math.sin(t/70+i)*j,ty=p.ly+Math.cos(t/61+i*2)*j;p.x+=(tx-p.x)*.12;p.y+=(ty-p.y)*.12}
+  else{const a=Math.atan2(p.vy,p.vx)+(Math.random()-.5)*.5;p.vx=Math.cos(a);p.vy=Math.sin(a);p.x+=p.vx*sp*dt;p.y+=p.vy*sp*dt;
+   const top=s===1?.52:.06;
+   if(p.x<.05){p.x=.05;p.vx=Math.abs(p.vx)}if(p.x>.95){p.x=.95;p.vx=-Math.abs(p.vx)}
+   if(p.y>.94){p.y=.94;p.vy=-Math.abs(p.vy)}
+   if(p.y<top){if(s===1){p.y+=Math.max(.004,(top-p.y)*.06);p.vy=Math.abs(p.vy)}else{p.y=top;p.vy=Math.abs(p.vy)}}}
+ });
+ ctx.clearRect(0,0,W,H);
+ if(s===1){ctx.fillStyle='rgba(61,139,253,.16)';ctx.fillRect(0,H*.47,W,H*.53)}
+ const rad=Math.max(6,Math.min(W,H)*.04);
+ P.forEach(p=>{ctx.beginPath();ctx.arc(p.x*W,p.y*H,rad,0,6.283);ctx.fillStyle='#2f7be8';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#0f3d80';ctx.stroke();
+  ctx.beginPath();ctx.arc(p.x*W-rad*.3,p.y*H-rad*.3,rad*.3,0,6.283);ctx.fillStyle='rgba(255,255,255,.55)';ctx.fill()});
+ raf=requestAnimationFrame(frame);
+}
+temp.oninput=showTemp;
+$$('[data-t]').forEach(b=>b.onclick=()=>{temp.value=b.dataset.t;showTemp()});
+
+/* ---------- Atom-Baukasten ---------- */
+const EL=[['',''],['H','Wasserstoff'],['He','Helium'],['Li','Lithium'],['Be','Beryllium'],['B','Bor'],['C','Kohlenstoff'],['N','Stickstoff'],['O','Sauerstoff'],['F','Fluor'],['Ne','Neon'],['Na','Natrium'],['Mg','Magnesium'],['Al','Aluminium'],['Si','Silicium'],['P','Phosphor'],['S','Schwefel'],['Cl','Chlor'],['Ar','Argon'],['K','Kalium'],['Ca','Calcium']];
+const A={p:0,n:0,e:0},MAX={p:20,n:22,e:20};
+const TASKS=[
+ {t:'ein Wasserstoff-Atom (H): 1 Proton, 0 Neutronen, 1 Elektron.',h:'Tippe bei Protonen einmal auf +. Dann bei Elektronen einmal auf +.',v:[1,0,1]},
+ {t:'ein Helium-Atom (He) mit 2 Protonen und 2 Neutronen. Es soll neutral sein.',h:'Neutral heißt: gleich viele Elektronen wie Protonen.',v:[2,2,2]},
+ {t:'ein Kohlenstoff-Atom (C) mit 6 Neutronen.',h:'Kohlenstoff hat die Ordnungszahl 6. Also braucht es 6 Protonen und 6 Elektronen.',v:[6,6,6]},
+ {t:'ein Sauerstoff-Atom (O) mit 8 Neutronen.',h:'Sauerstoff hat die Ordnungszahl 8.',v:[8,8,8]},
+ {t:'ein Natrium-Atom (Na) mit 12 Neutronen. Wie verteilen sich die Elektronen auf die Schalen?',v:[11,12,11],e:1},
+ {t:'ein Natrium-Ion Na⁺ mit 12 Neutronen. Es hat ein Elektron abgegeben.',v:[11,12,10],e:1},
+ {t:'ein Chlorid-Ion Cl⁻ mit 18 Neutronen. Es hat ein Elektron aufgenommen.',v:[17,18,18],e:1}
+];
+let ti=0,tries=0,firstOk=0;
+const tasks=()=>TASKS.filter(t=>erw()||!t.e);
+function shellsOf(e){const cap=[2,8,8,2],out=[];let l=e;for(const c of cap){if(l<=0)break;const k=Math.min(l,c);out.push(k);l-=k}return out}
+function drawAtom(){
+ const R=[52,80,108,136];let h='';
+ const sh=shellsOf(A.e);
+ R.forEach(r=>h+=`<circle class="shell" cx="150" cy="150" r="${r}"/>`);
+ sh.forEach((c,k)=>{for(let j=0;j<c;j++){const a=(-90+j*360/c+k*20)*Math.PI/180;h+=`<circle class="el" cx="${(150+R[k]*Math.cos(a)).toFixed(1)}" cy="${(150+R[k]*Math.sin(a)).toFixed(1)}" r="7"/>`}});
+ const N=A.p+A.n,nuc=[];let pp=A.p,nn=A.n;
+ for(let i=0;i<N;i++){if(pp&&(i%2===0||!nn)){nuc.push('pr');pp--}else{nuc.push('ne');nn--}}
+ nuc.forEach((c,i)=>{const r=6.2*Math.sqrt(i+.5),a=i*2.39996;h+=`<circle class="${c}" cx="${(150+r*Math.cos(a)).toFixed(1)}" cy="${(150+r*Math.sin(a)).toFixed(1)}" r="7.5"/>`});
+ if(!N&&!A.e)h+=`<text x="150" y="155" text-anchor="middle" font-size="15" fill="currentColor" opacity=".6">Tippe auf +</text>`;
+ $('#atomsvg').innerHTML=h;
+ ['p','n','e'].forEach(c=>$('#o-'+c).textContent=A[c]);
+ const el=EL[A.p],q=A.p-A.e;
+ const ch=q===0?'neutral':(q>0?'+'+q:'−'+(-q))+' (Ion)';
+ $('#ainfo').innerHTML=A.p===0?'<big>Noch kein Element</big>Ohne Protonen gibt es kein Element.'
+  :`<big>${el[1]} (${el[0]}${q===0?'':(Math.abs(q)>1?Math.abs(q):'')+(q>0?'⁺':q<0?'⁻':'')})</big>Ordnungszahl ${A.p} · Massenzahl ${A.p+A.n} · Ladung: ${ch}<br>Elektronen auf den Schalen: ${sh.join(', ')||'keine'}`;
+}
+function showTask(){
+ const L=tasks();
+ if(ti>=L.length){$('#atask').textContent='Geschafft! Du hast alle Atome gebaut.';$('#ahintbox').hidden=true;
+  $('#afb').innerHTML=`<p class="okt"><b>✓ Station geschafft.</b> ${firstOk} von ${L.length} beim ersten Versuch richtig.</p><button class="btn pri" data-a="next">Weiter</button> <button class="btn" data-a="again">Noch einmal</button>`;return}
+ const t=L[ti];$('#atask').textContent=`Aufgabe ${ti+1} von ${L.length}: Baue ${t.t}`;
+ $('#ahintbox').hidden=erw()||!t.h;$('#ahintbox').open=false;$('#ahint').textContent=t.h||'';
+}
+$('#v-atom').addEventListener('click',ev=>{
+ const b=ev.target.closest('button');if(!b)return;
+ if(b.dataset.c){const c=b.dataset.c;A[c]=Math.max(0,Math.min(MAX[c],A[c]+ +b.dataset.d));drawAtom();return}
+ if(b.id==='areset'){A.p=A.n=A.e=0;drawAtom();return}
+ if(b.id==='acheck'){
+  const L=tasks();if(ti>=L.length)return;const v=L[ti].v;tries++;
+  const ok=A.p===v[0]&&A.n===v[1]&&A.e===v[2];
+  if(ok){if(tries===1)firstOk++;$('#afb').innerHTML=`<p class="okt"><b>✓ Richtig!</b> ${EL[v[0]][1]}: ${v[0]} Protonen, ${v[1]} Neutronen, ${v[2]} Elektronen.</p><button class="btn pri" data-a="go">Nächste Aufgabe</button>`}
+  else{let m=[];if(A.p!==v[0])m.push('Prüfe die Protonen (Ordnungszahl).');if(A.n!==v[1])m.push('Prüfe die Neutronen.');if(A.e!==v[2])m.push(v[0]===v[2]?'Prüfe die Elektronen: neutral heißt gleich viele wie Protonen.':'Prüfe die Elektronen: Ein Ion hat mehr oder weniger Elektronen als Protonen.');
+   $('#afb').innerHTML=`<p class="badt"><b>✗ Noch nicht.</b> ${m.join(' ')}</p>`}
+  return}
+ if(b.dataset.a==='go'){ti++;tries=0;$('#afb').innerHTML='';showTask();if(ti>=tasks().length)finish('atom',firstOk,tasks().length);return}
+ if(b.dataset.a==='again'){initAtom();return}
+ if(b.dataset.a==='next')next('atom');
+});
+function initAtom(){ti=0;tries=0;firstOk=0;A.p=A.n=A.e=0;$('#afb').innerHTML='';drawAtom();showTask()}
+
+/* ---------- Rahmen ---------- */
+function chrome(){
+ const cur=(location.hash||'#start').slice(1);
+ $('#nav').innerHTML=[{id:'start',t:'Start'},...ST.map(s=>({id:s.id,t:s.n+' '+s.s})),{id:'pass',t:'Laborpass'}]
+  .map(s=>`<a href="#${s.id}" class="${s.id===cur?'on':''}">${s.t}${S.done[s.id]?' <span class="d">✓</span>':''}</a>`).join('');
+ $('#hub').innerHTML=ST.map(s=>`<a class="st" href="#${s.id}">${ICON[s.id]}<b>${s.id==='check'?'':'Station '+s.n+': '}${s.t}</b><span>${s.d}</span><span class="stamp">${S.done[s.id]?'✓ erledigt ('+S.score[s.id][0]+'/'+S.score[s.id][1]+')':'Los geht\'s →'}</span></a>`).join('');
+ const n=ST.filter(s=>S.done[s.id]).length;$('#pbar').textContent=`${n} von ${ST.length} Stationen erledigt`;
+ let tr=0,tt=0;
+ $('#ptab').innerHTML=ST.map(s=>{const sc=S.score[s.id];if(sc){tr+=sc[0];tt+=sc[1]}return`<tr><td>${s.n+'. '}${s.t}</td><td>${sc?'✓ '+sc[0]+' / '+sc[1]:'○ offen'}</td></tr>`}).join('')+`<tr><td><b>Gesamt</b></td><td><b>${tr} / ${tt}</b></td></tr>`;
+ $('#plevel').textContent='Aktuelles Niveau: '+(erw()?'Erweitert':'Basis');
+ $('#lv-basis').setAttribute('aria-pressed',!erw());$('#lv-erw').setAttribute('aria-pressed',erw());
+ $$('.ws').forEach(d=>d.open=!erw());
+}
+function initAll(){trainer('stoffe',STOFFE,['Reinstoff','Gemisch']);trainer('teilchen',TEILCHEN);trainer('reaktion',REAKTION,['physikalischer Vorgang','chemische Reaktion']);trainer('check',CHECK);initAtom()}
+function route(){
+ const id=(location.hash||'#start').slice(1),v=$('#v-'+id)?id:'start';
+ $$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
+ cancelAnimationFrame(raf);last=0;
+ if(v==='teilchen'){size();raf=requestAnimationFrame(frame)}
+ chrome();window.scrollTo(0,0);
+}
+function setLevel(l){S.level=l;save();initAll();chrome()}
+$('#lv-basis').onclick=()=>setLevel('basis');$('#lv-erw').onclick=()=>setLevel('erw');
+$('#reset').onclick=()=>{S.done={};S.score={};save();initAll();chrome()};
+addEventListener('hashchange',route);
+showTemp();initAll();route();
+}
+</script>
+</body>
+</html>

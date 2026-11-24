@@ -120,6 +120,12 @@ main{min-height:60vh}
 .tag.spr{background:var(--orange-soft);color:var(--orange-text);border:1px dashed var(--orange-text)}
 .empty{border:2px dashed var(--line);border-radius:10px;padding:22px;color:var(--muted);margin-top:18px}
 
+/* Vertretung */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px;margin-top:18px}
+.vcard{display:flex;flex-direction:column;gap:8px;border:2px solid var(--line);border-top:8px solid var(--petrol);border-radius:10px;padding:18px 20px;background:#fff}
+.vcard .btn{align-self:flex-start;margin-top:auto}
+.vcard .jg{font-weight:900;color:var(--muted);font-size:.95rem}
+
 /* Über mich */
 .about{display:grid;grid-template-columns:340px 1fr;gap:40px;align-items:start}
 .about img{border-radius:14px}
@@ -201,6 +207,7 @@ footer .wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px}
       <li><a href="#informatik">Informatik</a></li>
       <li><a href="#musik">Musik</a></li>
       <li><a href="#klasse-10-3">Klasse 10.3</a></li>
+      <li><a href="#vertretung">Vertretung</a></li>
       <li><a href="#kontakt">Kontakt</a></li>
     </ul></nav>
   </div>
@@ -381,6 +388,14 @@ footer .wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px}
   </div>
 </div></section>
 
+<!-- ================= VERTRETUNG ================= -->
+<section class="view" id="view-vertretung" hidden><div class="wrap">
+  <div class="fachhead stack"><h1>Vertretungsstunden</h1>
+  <p class="lead">Hier findest du Lernumgebungen für Vertretungsstunden. Du brauchst nur ein iPad. Wähle dein Fach und starte die Stunde, die deine Lehrkraft dir nennt.</p></div>
+  <div class="picker"><p class="picker-label" id="vl">Fach wählen</p><div class="chips" role="group" aria-labelledby="vl" id="vChips"></div></div>
+  <div class="vgrid" id="vList"></div>
+</div></section>
+
 <!-- ================= KONTAKT ================= -->
 <section class="view" id="view-kontakt" hidden><div class="wrap">
   <div class="stack">
@@ -467,6 +482,13 @@ const UEBUNGEN = [
    url:'uebungen/kraftraum-check.html'}
 ];
 
+/* 4) VERTRETUNG: eine Zeile pro Vertretungsstunde. Datei in den Ordner vertretung/ legen. */
+const VERTRETUNG = [
+  {fach:'Chemie', jahrgang:'Jahrgang 9', titel:'Chemie-Labor: Grundlagen',
+   text:'Stoffe ordnen, Teilchen beobachten, ein Atom bauen und chemische Reaktionen erkennen. Mit Abschluss-Check und Laborpass.',
+   dauer:'ca. 45 Minuten', niveau:'Basis und Erweitert', url:'vertretung/chemie-grundlagen-9.html'}
+];
+
 const TERMINE = [
   {d:'2026-11-12', art:'ka', t:'Klassenarbeit Mathe'},
   {d:'2026-11-25', art:'st', t:'Eltern- und Schüler:innensprechtag', n:'14 bis 18 Uhr'},
@@ -495,7 +517,7 @@ const TERMINE = [
 ];
 /* ===================== ab hier nichts mehr ändern ===================== */
 
-const VIEWS=['start','ueber-mich','sport','biologie','informatik','musik','klasse-10-3','kontakt'];
+const VIEWS=['start','ueber-mich','sport','biologie','informatik','musik','klasse-10-3','vertretung','kontakt'];
 const FACHNAME={sport:'Sport',biologie:'Biologie',informatik:'Informatik',musik:'Musik'};
 const ARTNAME={ka:'Klassenarbeit',zp:'Zentrale Prüfung',st:'Schultermin',fr:'Kein Unterricht'};
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -512,6 +534,7 @@ function show(){
     if(a.getAttribute('href')==='#'+v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
   document.title=(v==='start'?'':document.querySelector('#view-'+v+' h1').textContent+' – ')+'Kai Berner – Lehrerseite';
   if(KURSE[v])renderFach(v);
+  if(v==='vertretung')renderVertretung();
   window.scrollTo(0,0);
 }
 window.addEventListener('hashchange',show);
@@ -555,6 +578,20 @@ function renderFach(f){
   box.innerHTML=h;
   box.querySelectorAll('[data-klasse]').forEach(b=>b.onclick=()=>{state.klasse[f]=b.dataset.klasse;store.set('kb-klasse-'+f,b.dataset.klasse);renderFach(f)});
   box.querySelectorAll('[data-level]').forEach(b=>b.onclick=()=>{state.niveau=b.dataset.level;store.set('kb-niveau',state.niveau);renderFach(f)});
+}
+
+/* ---------- Vertretung ---------- */
+let vFach=store.get('kb-vfach')||'alle';
+function renderVertretung(){
+  const faecher=[...new Set(VERTRETUNG.map(v=>v.fach))].sort();
+  if(vFach!=='alle'&&!faecher.includes(vFach))vFach='alle';
+  document.getElementById('vChips').innerHTML=['alle',...faecher].map(f=>
+    '<button type="button" class="chip" data-vf="'+esc(f)+'" aria-pressed="'+(f===vFach)+'">'+(f==='alle'?'Alle Fächer':esc(f))+'</button>').join('');
+  const liste=VERTRETUNG.filter(v=>vFach==='alle'||v.fach===vFach);
+  document.getElementById('vList').innerHTML=liste.length?liste.map(v=>'<article class="vcard"><span class="jg">'+esc(v.fach)+' · '+esc(v.jahrgang)+'</span><h3>'+esc(v.titel)+'</h3><p>'+esc(v.text)+'</p>'+
+    '<div class="tags"><span class="tag">'+esc(v.niveau)+'</span>'+(v.dauer?'<span class="tag" style="background:#fff;border-color:var(--line);color:var(--muted)">'+esc(v.dauer)+'</span>':'')+'</div>'+
+    '<a class="btn" href="'+esc(v.url)+'">Stunde starten</a></article>').join(''):'<div class="empty">Für dieses Fach gibt es noch keine Vertretungsstunde.</div>';
+  document.querySelectorAll('[data-vf]').forEach(b=>b.onclick=()=>{vFach=b.dataset.vf;store.set('kb-vfach',vFach);renderVertretung()});
 }
 
 /* ---------- Startseite: Sport-Kacheln ---------- */
