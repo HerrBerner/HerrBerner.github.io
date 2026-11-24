@@ -120,6 +120,13 @@ main{min-height:60vh}
 .tag.spr{background:var(--orange-soft);color:var(--orange-text);border:1px dashed var(--orange-text)}
 .empty{border:2px dashed var(--line);border-radius:10px;padding:22px;color:var(--muted);margin-top:18px}
 
+/* Baustellen-Banner */
+.wip{background:var(--gelb);color:var(--petrol-dark);border-bottom:4px solid var(--petrol-dark)}
+.wip .wrap{display:flex;align-items:center;gap:14px;padding-block:14px}
+.wip svg{flex:none}
+.wip b{display:block;font-size:1.25rem;font-weight:900;line-height:1.2}
+.wip[hidden]{display:none}
+
 /* Vertretung */
 .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:16px;margin-top:18px}
 .vcard{display:flex;flex-direction:column;gap:8px;border:2px solid var(--line);border-top:8px solid var(--petrol);border-radius:10px;padding:18px 20px;background:#fff}
@@ -191,6 +198,11 @@ footer .wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 <div class="topbar"><div class="wrap">
   <span>Persönliche Lehrerseite. Keine offizielle Seite der Schule.</span>
   <a href="https://europaschulekoeln.eu/">Zur Homepage der Europaschule Köln</a>
+</div></div>
+
+<div class="wip" id="wip" role="status" hidden><div class="wrap">
+  <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 38 36H2z" fill="#fff" stroke="#0f4560" stroke-width="3" stroke-linejoin="round"/><path d="M20 15v10" stroke="#0f4560" stroke-width="4" stroke-linecap="round"/><circle cx="20" cy="30.5" r="2.4" fill="#0f4560"/></svg>
+  <p><b>Noch in Arbeit</b>Diese Seite wird gerade aufgebaut. Inhalte können sich noch ändern.</p>
 </div></div>
 
 <header class="head">
@@ -454,7 +466,10 @@ footer .wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px}
         niveau  ['basis'], ['sprinter'] oder beide
         url     Link zum freigegebenen Artefakt
    3) TERMINE:  Datum als JJJJ-MM-TT. art: ka | zp | st | fr
+   0) IN_ARBEIT: true = Banner „Noch in Arbeit“ zeigen, false = Banner aus.
    ===================================================================== */
+const IN_ARBEIT = true;
+
 const KURSE = {
   sport: [
     {id:'5.1',  name:'Klasse 5.1', zusatz:'Sport',     thema:'Spiele erfinden und Regeln verändern. Ab Dezember: Bodenturnen.'},
@@ -517,6 +532,7 @@ const TERMINE = [
 ];
 /* ===================== ab hier nichts mehr ändern ===================== */
 
+document.getElementById('wip').hidden=!IN_ARBEIT;
 const VIEWS=['start','ueber-mich','sport','biologie','informatik','musik','klasse-10-3','vertretung','kontakt'];
 const FACHNAME={sport:'Sport',biologie:'Biologie',informatik:'Informatik',musik:'Musik'};
 const ARTNAME={ka:'Klassenarbeit',zp:'Zentrale Prüfung',st:'Schultermin',fr:'Kein Unterricht'};
