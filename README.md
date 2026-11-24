@@ -4,7 +4,7 @@ Persönliche Lehrerseite (Europaschule Köln). Keine offizielle Seite der Schule
 
 ## Inhalte pflegen
 Alle Inhalte stehen in `index.html` im Abschnitt `INHALTE ZUM PFLEGEN`:
-- `IN_ARBEIT`: `true` zeigt das Banner „Noch in Arbeit“, `false` blendet es aus
+- `IN_ARBEIT`: `true` sperrt die Seite mit „Noch in Arbeit“, `false` öffnet sie. Vorschau trotz Sperre: `https://herrberner.github.io/?vorschau`
 - `KURSE`: Klassen je Fach und ihr aktuelles Thema
 - `UEBUNGEN`: eine Zeile pro Übung (Fach, Klasse, Niveau basis/sprinter, Link)
 - `TERMINE`: Termine der Klasse 10.3 (Datum als JJJJ-MM-TT)
